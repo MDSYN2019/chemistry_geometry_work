@@ -3,7 +3,7 @@ import logging
 import numpy as np
 import torch
 from torch import nn
-from d2l import torch as d2l
+import matplotlib.pyplot as plt
 
 def add_to_class(Class):
     """
@@ -24,3 +24,26 @@ def do(self):
 if __name__ == "__main__":
     a = A()
     a.do()
+
+def plot_predictions(train_data, 
+                     train_labels, 
+                     test_data, 
+                     test_labels, 
+                     predictions=None):
+    """
+    Plots training data, test data and compares predictions.
+    """
+    plt.figure(figsize=(10, 7))
+  
+    # Plot training data in blue
+    plt.scatter(train_data, train_labels, c="b", s=4, label="Training data")
+    
+    # Plot test data in green
+    plt.scatter(test_data, test_labels, c="g", s=4, label="Testing data")
+    
+    if predictions is not None:
+        # Plot the predictions in red (predictions were made on the test data)
+        plt.scatter(test_data, predictions, c="r", s=4, label="Predictions")
+    
+        # Show the legend
+    plt.legend(prop={"size": 14});
