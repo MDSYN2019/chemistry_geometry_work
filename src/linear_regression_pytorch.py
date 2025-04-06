@@ -1,3 +1,4 @@
+
 import torch
 from torch import nn
 from utilities import plot_predictions
@@ -57,12 +58,19 @@ if __name__ == "__main__":
         y_pred = model_0(X_train)
         # 2. Calculate the loss
         loss = loss_fn(y_pred, y_train)
+        # 3. Zero grad of the optimizer
         optimizer.zero_grad()
+        # 4. loss backwards 
         loss.backward()
+        # 5. Progress the optimzier
+        
         optimizer.step()
         # put the model in evaluation mode 
         model_0.eval()
 
+
+        ### testing
+        
         with torch.inference_mode():
             # Forward pass on test data
             test_pred = model_0(X_test)
