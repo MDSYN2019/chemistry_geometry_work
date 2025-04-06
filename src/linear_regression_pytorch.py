@@ -17,7 +17,6 @@ class LinearRegressionModel(nn.Module):
 
     
 if __name__ == "__main__":
-    # Create the loss function 
     
     # Creating some data 
     weight = 0.7
@@ -45,7 +44,6 @@ if __name__ == "__main__":
         
         
     # plot_predictions(train_data = X_train,  predictions = y_preds) TODO
-
     epochs = 100
     train_loss_values = []
     test_loss_values = []
@@ -84,3 +82,7 @@ if __name__ == "__main__":
                 train_loss_values.append(loss.detach().numpy())
                 test_loss_values.append(test_loss.detach().numpy())
                 print(f"Epoch: {epoch} | MAE Train Loss: {loss} | MAE Test Loss: {test_loss} ")
+
+"""
+
+"""
