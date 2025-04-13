@@ -51,7 +51,6 @@ if __name__ == "__main__":
     end = 1 
     step = 0.001 
 
-    
     X = torch.arange(start, end, step).unsqueeze(dim = 1)
     y = linear_reg_example(X, weight, bias)
     # split the data into 80% training, 20% testing 
@@ -74,6 +73,8 @@ if __name__ == "__main__":
     train_loss_values = []
     test_loss_values = []
     epoch_count = []
+
+    
     with torch.inference_mode():
         y_pred = another_model_0(X_train)
 

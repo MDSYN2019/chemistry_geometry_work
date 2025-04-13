@@ -1,13 +1,34 @@
+from feast import Entity, FeatureView, Field
 from feast import FeatureStore
-import pandas as pd
-from datetime import datetime
+from feast.types import Float32
+from feast.file_source import FileSource
 
-entity_df = pd.DataFrame.from_dict({
-    "driver_id": [1001, 1002, 1003, 1004],
-    "event_timestamp": [
-        datetime(2021, 4, 12, 10, 59, 42),
-        datetime(2021, 4, 12, 8,  12, 10),
-        datetime(2021, 4, 12, 16, 40, 26),
-        datetime(2021, 4, 12, 15, 1 , 12)
-    ]
-})
+
+# rdkit
+from rdkit import Chem
+from rdkit.Chem import Descriptors
+import pandas as pd
+
+
+PATH = ""
+
+molecular_source = FileSource(
+    path=PATH,
+    timestamp_field = "event_timestamp"
+)
+
+
+# Entity
+molecule = Entity(name = "molecule_id", join_keys = ["molecule_id"])
+
+# Feature engineering function
+
+def compute_rdkit_features(df: pd.DataFrame) -> pd.DataFrame:
+    df["mol"] = df["smiles"].apply(Chem.MolFromSmiles)
+    df["mol_weight"] = df["mol"].apply(Descriptors.MolWt)
+    df["logp"] = df["mol"].apply(Descriptors.MolLogP)
+    return df[["molecule_id", "mol_weight", "logp", "event_timestamp"]]
+
+
+
+
