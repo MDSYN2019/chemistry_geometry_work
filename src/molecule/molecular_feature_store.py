@@ -1,34 +1,21 @@
-from feast import Entity, FeatureView, Field
-from feast import FeatureStore
-from feast.types import Float32
-from feast.file_source import FileSource
-
-
 # rdkit
 from rdkit import Chem
 from rdkit.Chem import Descriptors
+import datamol as dm
 import pandas as pd
 
+from mol_features import datamol_clean_cartridge
 
-PATH = ""
+molecular_data_source = datamol_clean_cartridge()
 
-molecular_source = FileSource(
-    path=PATH,
-    timestamp_field = "event_timestamp"
+# Use RDKit descriptors directly
+molecular_data_source["mol_weight"] = molecular_data_source["mol"].apply(Descriptors.MolWt)
+molecular_data_source["logp"] = molecular_data_source["mol"].apply(Descriptors.MolLogP)
+molecular_data_source["tpsa"] = molecular_data_source["mol"].apply(Descriptors.TPSA)
+
+# Feast requires event_timestamp
+molecular_data_source["event_timestamp"] = pd.Timestamp.now()
+
+molecular_data_source[["id", "mol_weight", "logp", "tpsa", "event_timestamp"]].to_csv(
+    "../../data/molecule_features.csv", index=False
 )
-
-
-# Entity
-molecule = Entity(name = "molecule_id", join_keys = ["molecule_id"])
-
-# Feature engineering function
-
-def compute_rdkit_features(df: pd.DataFrame) -> pd.DataFrame:
-    df["mol"] = df["smiles"].apply(Chem.MolFromSmiles)
-    df["mol_weight"] = df["mol"].apply(Descriptors.MolWt)
-    df["logp"] = df["mol"].apply(Descriptors.MolLogP)
-    return df[["molecule_id", "mol_weight", "logp", "event_timestamp"]]
-
-
-
-
