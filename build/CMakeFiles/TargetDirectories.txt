@@ -1,3 +1,0 @@
-/home/sang/Desktop/Sandbox/chemistry_geometry_work/build/CMakeFiles/main.dir
-/home/sang/Desktop/Sandbox/chemistry_geometry_work/build/CMakeFiles/edit_cache.dir
-/home/sang/Desktop/Sandbox/chemistry_geometry_work/build/CMakeFiles/rebuild_cache.dir
