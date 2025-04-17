@@ -158,3 +158,9 @@ if __name__ == "__main__":
             loss = loss_fn(logits, y)
             print(loss, logits, epoch, X.shape, y.shape)
             
+
+            train_loss += loss
+
+            # optimizer zero grad
+            optimizer.zero_grad()
+            loss.backward()
