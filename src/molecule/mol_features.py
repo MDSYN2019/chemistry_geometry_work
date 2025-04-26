@@ -8,15 +8,13 @@ import os
 import datamol as dm
 import pandas as pd
 from dataclasses import dataclass, field
-from typing import Any
 from math import asin, cos, radians, sin, sqrt
+from typing import Any
 
 import asyncpg
 import asyncio
 
-
 """
-
 The dataclasses module in python simplifies the creation of clasess
 used primarily for storing data. While regular classes can be used for
 the same purpose, dataclasses offer built-in functionality
@@ -77,6 +75,11 @@ async def execute_molecular_filter(
     if results:
         return results
 
+async def list_tables():
+    result= await connect_to_db("SELECT table_schema, table_name FROM from information_schema.tables")
+    for row in result:
+        print(dict(row))
+        
 
 def preprocess_postgres_cartridge() -> pd.DataFrame:
     """
@@ -133,7 +136,6 @@ class EMolculeConnect:
         cartridge_result = asyncio.run(execute_molecular_filter())
         output_data = [value.values() for value in cartridge_result]
 
-
 @dataclass
 class Position:
     name: str
@@ -149,7 +151,6 @@ class Position:
             (lam_2 - lam_1) ** 2
         )
         return 2 * r * asin(sqrt(h))
-
 
 if __name__ == "__main__":
     pandas_result = datamol_clean_cartridge()
