@@ -115,3 +115,4 @@ def create_adjacency_matrix(n_atoms, mol):
             edge_features = np.empty((0, len(bond_type_to_idx)))
 
     return adjacency, edge_features, edge_indices
+
