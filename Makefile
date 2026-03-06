@@ -5,12 +5,12 @@
 
 # Compiler and compiler flags
 CXX = g++
-CXXFLAGS = -std=c++11 -I/usr/local/include/eigen3 -I/usr/local -Ilib/eigen-3.4.0 -I/usr/local/include -Ilib/
+CXXFLAGS = -std=c++11 -I/usr/local/include/eigen3 -I/usr/local -Ilib/eigen-3.4.0 -I/usr/local/include -Icxx/include
 
 LDFLAGS = -L/usr/local/lib -lspdlog
 
 # Source files and target executable
-SRCS = cxx/geometry_functions.cxx main.cxx
+SRCS = cxx/src/core/geometry_functions.cxx cxx/apps/main.cxx
 TARGET = main
 
 # Build rule
