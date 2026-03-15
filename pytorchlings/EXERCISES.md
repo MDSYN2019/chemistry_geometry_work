@@ -27,3 +27,6 @@
 | 22 | PyG | Train/val/test node masks | `exercises/22_graph_splits/train_val_test_masks.py` | `solutions/22_train_val_test_masks.py` |
 | 23 | PyG | Negative edge sampling | `exercises/23_negative_sampling/negative_edges.py` | `solutions/23_negative_edges.py` |
 | 24 | PyG | Gradient node importance stub | `exercises/24_gnn_explainability/node_importance_stub.py` | `solutions/24_node_importance_stub.py` |
+| 25 | Lightning | LightningModule train/val step | `exercises/25_lightning_module/lightning_module_step.py` | `solutions/25_lightning_module_step.py` |
+| 26 | Lightning | LightningDataModule basics | `exercises/26_lightning_datamodule/datamodule_basics.py` | `solutions/26_datamodule_basics.py` |
+| 27 | Lightning | Trainer + checkpoint smoke setup | `exercises/27_lightning_trainer/trainer_smoke.py` | `solutions/27_trainer_smoke.py` |
