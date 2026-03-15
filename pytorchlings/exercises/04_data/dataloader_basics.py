@@ -8,4 +8,4 @@ def build_loader(batch_size: int = 4) -> DataLoader:
     y = 2 * x + 1
     ds = TensorDataset(x, y)
     # TODO: enable shuffling
-    return DataLoader(ds, batch_size=batch_size, shuffle=False)
+    return DataLoader(ds, batch_size=batch_size, shuffle=True)
