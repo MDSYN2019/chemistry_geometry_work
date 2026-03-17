@@ -30,3 +30,10 @@
 | 25 | Lightning | LightningModule train/val step | `exercises/25_lightning_module/lightning_module_step.py` | `solutions/25_lightning_module_step.py` |
 | 26 | Lightning | LightningDataModule basics | `exercises/26_lightning_datamodule/datamodule_basics.py` | `solutions/26_datamodule_basics.py` |
 | 27 | Lightning | Trainer + checkpoint smoke setup | `exercises/27_lightning_trainer/trainer_smoke.py` | `solutions/27_trainer_smoke.py` |
+| 28 | NetworkX | Graph construction + Graph API basics | `exercises/28_nx_graph_basics/nx_graph_basics.py` | `solutions/28_nx_graph_basics.py` |
+| 29 | NetworkX | Shortest path + neighbors | `exercises/29_nx_graph_traversal/nx_graph_traversal.py` | `solutions/29_nx_graph_traversal.py` |
+| 30 | NetworkX | Connected components + degree ranking | `exercises/30_nx_graph_analysis/nx_graph_analysis.py` | `solutions/30_nx_graph_analysis.py` |
+| 31 | NetworkX | Weighted shortest paths | `exercises/31_nx_weighted_paths/nx_weighted_paths.py` | `solutions/31_nx_weighted_paths.py` |
+| 32 | NetworkX | Directed predecessors/successors + reachability | `exercises/32_nx_directed_graphs/nx_directed_graphs.py` | `solutions/32_nx_directed_graphs.py` |
+| 33 | NetworkX | Bipartite graph + projections | `exercises/33_nx_bipartite_basics/nx_bipartite_basics.py` | `solutions/33_nx_bipartite_basics.py` |
+| 34 | NetworkX | Cycle detection + tree check | `exercises/34_nx_cycles_and_trees/nx_cycles_and_trees.py` | `solutions/34_nx_cycles_and_trees.py` |
