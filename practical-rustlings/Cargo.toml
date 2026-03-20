@@ -1,0 +1,8 @@
+[package]
+name = "practical_rustlings"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "practical_rustlings"
+path = "src/lib.rs"
