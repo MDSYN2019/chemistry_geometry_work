@@ -18,6 +18,7 @@ A rustlings-style practice track for **PyTorch** and **PyTorch Geometric (PyG)**
 - Add 25-27 for PyTorch Lightning abstractions.
 - Finish with 28-30 for NetworkX `nx.Graph` practice.
 - Continue 31-34 for weighted, directed, bipartite, and cycle/tree graph workflows.
+- Add 35-37 for PyG GraphGym config, registration, and experiment YAML practice.
 
 ## Quick check command
 
