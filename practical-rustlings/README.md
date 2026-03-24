@@ -25,3 +25,4 @@
 | macros                 | §20.5               |
 | clippy                 | Appendix D          |
 | conversions            | n/a                 |
+| advanced_patterns      | §15-17, §20         |
