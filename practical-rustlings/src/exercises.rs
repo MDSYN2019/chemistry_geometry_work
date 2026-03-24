@@ -7,6 +7,9 @@ pub enum SimError {
     UnitMismatch,
     NonConvergent,
     InvalidTransition,
+    Overflow,
+    MissingField,
+    OutOfBounds,
 }
 
 // 1) ok-or-not-ok
@@ -205,4 +208,89 @@ pub fn run_steps<I: Integrator>(integrator: &I, mut x: f64, v: f64, dt: f64, n: 
         x = integrator.integrate(x, v, dt);
     }
     x
+}
+
+// 21) pyo3-function-signatures
+pub fn pyo3_scale(values: &[f64], scale: Option<f64>) -> Vec<f64> {
+    let factor = scale.unwrap_or(1.0);
+    values.iter().map(|v| v * factor).collect()
+}
+
+// 22) python-index-semantics
+pub fn normalize_py_index(len: usize, index: isize) -> Result<usize, SimError> {
+    if len == 0 {
+        return Err(SimError::OutOfBounds);
+    }
+    let len_isize = len as isize;
+    let normalized = if index < 0 { len_isize + index } else { index };
+    if normalized >= 0 && normalized < len_isize {
+        Ok(normalized as usize)
+    } else {
+        Err(SimError::OutOfBounds)
+    }
+}
+
+// 23) overflow-to-pyerr
+pub fn checked_sum_i64(values: &[i64]) -> Result<i64, SimError> {
+    values.iter().try_fold(0_i64, |acc, &v| {
+        acc.checked_add(v).ok_or(SimError::Overflow)
+    })
+}
+
+// 24) kwargs-validation
+pub fn required_positive_arg(
+    kwargs: &std::collections::HashMap<String, f64>,
+    key: &str,
+) -> Result<f64, SimError> {
+    let value = kwargs.get(key).copied().ok_or(SimError::MissingField)?;
+    if value > 0.0 {
+        Ok(value)
+    } else {
+        Err(SimError::UnitMismatch)
+    }
+}
+
+// 25) vectorized-bridge
+pub fn batch_square(values: &[i64]) -> Vec<i64> {
+    values.iter().map(|v| v * v).collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::HashMap;
+
+    #[test]
+    fn normalizes_python_index() {
+        assert_eq!(normalize_py_index(4, 0), Ok(0));
+        assert_eq!(normalize_py_index(4, -1), Ok(3));
+        assert_eq!(normalize_py_index(4, -4), Ok(0));
+        assert_eq!(normalize_py_index(4, 4), Err(SimError::OutOfBounds));
+        assert_eq!(normalize_py_index(0, 0), Err(SimError::OutOfBounds));
+    }
+
+    #[test]
+    fn catches_checked_sum_overflow() {
+        assert_eq!(checked_sum_i64(&[1, 2, 3]), Ok(6));
+        assert_eq!(checked_sum_i64(&[i64::MAX, 1]), Err(SimError::Overflow));
+    }
+
+    #[test]
+    fn validates_required_positive_kwargs() {
+        let mut kwargs = HashMap::new();
+        kwargs.insert("temperature_k".to_string(), 300.0);
+        assert_eq!(
+            required_positive_arg(&kwargs, "temperature_k"),
+            Ok(300.0)
+        );
+        assert_eq!(
+            required_positive_arg(&kwargs, "pressure"),
+            Err(SimError::MissingField)
+        );
+        kwargs.insert("temperature_k".to_string(), 0.0);
+        assert_eq!(
+            required_positive_arg(&kwargs, "temperature_k"),
+            Err(SimError::UnitMismatch)
+        );
+    }
 }
