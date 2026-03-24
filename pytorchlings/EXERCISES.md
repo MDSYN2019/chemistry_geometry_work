@@ -37,3 +37,6 @@
 | 32 | NetworkX | Directed predecessors/successors + reachability | `exercises/32_nx_directed_graphs/nx_directed_graphs.py` | `solutions/32_nx_directed_graphs.py` |
 | 33 | NetworkX | Bipartite graph + projections | `exercises/33_nx_bipartite_basics/nx_bipartite_basics.py` | `solutions/33_nx_bipartite_basics.py` |
 | 34 | NetworkX | Cycle detection + tree check | `exercises/34_nx_cycles_and_trees/nx_cycles_and_trees.py` | `solutions/34_nx_cycles_and_trees.py` |
+| 35 | PyG | GraphGym config basics | `exercises/35_graphgym_config/graphgym_config.py` | `solutions/35_graphgym_config.py` |
+| 36 | PyG | GraphGym custom pooling registration | `exercises/36_graphgym_register/register_pooling.py` | `solutions/36_register_pooling.py` |
+| 37 | PyG | GraphGym YAML experiment setup | `exercises/37_graphgym_yaml/build_experiment_yaml.py` | `solutions/37_graphgym_yaml.py` |
