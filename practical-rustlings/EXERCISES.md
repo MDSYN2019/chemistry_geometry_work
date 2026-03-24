@@ -1,4 +1,4 @@
-# Practical Rustlings Exercises (25)
+# Practical Rustlings Exercises (40)
 
 These exercises are grouped by the skill gaps identified in your assessment.
 
@@ -202,9 +202,113 @@ These exercises are grouped by the skill gaps identified in your assessment.
 
 ---
 
+## Track G — Advanced Rust Patterns (More Complex)
+
+### 26) `interior-mutability-bus`
+**Focus:** `Rc<RefCell<T>>` tradeoffs and runtime borrow safety.
+- Build a tiny event bus where handlers can enqueue follow-up events.
+- Explore how shared mutable state can deadlock at runtime borrow boundaries.
+
+**Done when:** tests demonstrate safe handler sequencing and avoid nested mutable borrows.
+
+### 27) `concurrent-pipeline`
+**Focus:** channels + worker coordination.
+- Build a 3-stage pipeline (`parse -> transform -> aggregate`) using threads and channels.
+- Ensure all sender handles are dropped so receivers terminate cleanly.
+
+**Done when:** no hangs, deterministic output ordering strategy is documented, and shutdown is explicit.
+
+### 28) `pin-and-self-reference`
+**Focus:** why pinning exists and when self-referential structs are dangerous.
+- Implement a safe API around pinned buffers or futures.
+- Add notes explaining what cannot be expressed safely without pinning.
+
+**Done when:** compile-time constraints prevent moves after pinning and tests verify address stability.
+
+### 29) `async-timeouts-retries`
+**Focus:** robust async orchestration.
+- Build an async operation with timeout + retry policy and backoff.
+- Classify retryable vs terminal errors.
+
+**Done when:** tests cover timeout, transient failure recovery, and terminal failure behavior.
+
+### 30) `ffi-boundary-safety`
+**Focus:** safe wrappers around `unsafe` boundary.
+- Create a tiny C-ABI style interface and a safe Rust wrapper.
+- Validate UTF-8 / null pointer / ownership transfer assumptions.
+
+**Done when:** all `unsafe` blocks are documented with invariants and wrapper API is panic-safe.
+
+---
+
+## Track H — Extra Advanced Folder Drills (`24_advanced_patterns`)
+
+### 31) `advanced_patterns1_arc_mutex`
+**Focus:** thread-safe shared mutation with `Arc<Mutex<T>>`.
+- Spawn multiple threads incrementing one shared counter.
+
+**Done when:** final count matches `threads * increments_per_thread`.
+
+### 32) `advanced_patterns2_rwlock_cache`
+**Focus:** read-heavy locking with `RwLock`.
+- Build a small cache API with read and write methods.
+
+**Done when:** repeated reads avoid write lock contention in design.
+
+### 33) `advanced_patterns3_mpsc_fan_in`
+**Focus:** producer fan-in over channels.
+- Send values from N producers into one consumer sum.
+
+**Done when:** all sender handles are dropped and receiver terminates naturally.
+
+### 34) `advanced_patterns4_scoped_threads`
+**Focus:** borrowing into threads with `std::thread::scope`.
+- Split a slice and compute partial sums concurrently.
+
+**Done when:** no cloning for borrowed halves and total is correct.
+
+### 35) `advanced_patterns5_condvar_queue`
+**Focus:** blocking synchronization primitives.
+- Implement put/take semantics for a one-slot queue.
+
+**Done when:** producer/consumer coordination works without busy-waiting.
+
+### 36) `advanced_patterns6_pin_basics`
+**Focus:** basic pinning semantics.
+- Pin a heap allocation and validate stable pointer identity.
+
+**Done when:** tests prove address stability while pinned.
+
+### 37) `advanced_patterns7_retry_backoff`
+**Focus:** robust retry loops.
+- Retry a fallible closure for a fixed attempt budget.
+
+**Done when:** success and final-error paths are both tested.
+
+### 38) `advanced_patterns8_cow_normalize`
+**Focus:** allocation-aware string APIs with `Cow<'_, str>`.
+- Borrow unchanged input, allocate only for normalized output.
+
+**Done when:** tests verify borrowed vs owned branches.
+
+### 39) `advanced_patterns9_ffi_guard`
+**Focus:** nullable pointer validation at FFI boundary.
+- Convert `*const c_char` into safe `&str`-backed behavior.
+
+**Done when:** null and invalid UTF-8 are handled as explicit errors.
+
+### 40) `advanced_patterns10_state_machine`
+**Focus:** compile-time state transitions.
+- Build `Initialized -> Running -> Finished` typed flow.
+
+**Done when:** impossible transitions are rejected by the type system.
+
+---
+
 ## Starter + reference code in this repo
 
-- `src/exercises.rs` provides starter APIs for every exercise number in this document.
+- `src/exercises.rs` provides starter APIs for exercises 1–30 in this document.
+- `24_advanced_patterns/` provides an additional 10 file-based drills (31–40).
 - `src/references.rs` provides compact, working references for selected exercises (transpose, typestate builder, units).
 
 You can either:

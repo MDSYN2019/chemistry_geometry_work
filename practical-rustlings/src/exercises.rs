@@ -1,4 +1,4 @@
-//! Starter surfaces for the 20 exercises listed in `EXERCISES.md`.
+//! Starter surfaces for the exercises listed in `EXERCISES.md`.
 //! Each function/type is intentionally minimal so you can evolve design yourself.
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -10,6 +10,9 @@ pub enum SimError {
     Overflow,
     MissingField,
     OutOfBounds,
+    BorrowConflict,
+    Timeout,
+    NullPtr,
 }
 
 // 1) ok-or-not-ok
@@ -255,10 +258,90 @@ pub fn batch_square(values: &[i64]) -> Vec<i64> {
     values.iter().map(|v| v * v).collect()
 }
 
+// 26) interior-mutability-bus
+pub fn push_event_safely(
+    queue: &std::rc::Rc<std::cell::RefCell<Vec<String>>>,
+    event: &str,
+) -> Result<(), SimError> {
+    let mut guard = queue.try_borrow_mut().map_err(|_| SimError::BorrowConflict)?;
+    guard.push(event.to_string());
+    Ok(())
+}
+
+// 27) concurrent-pipeline
+pub fn concurrent_square_sum(values: Vec<i64>) -> Result<i64, SimError> {
+    use std::sync::mpsc;
+    use std::thread;
+
+    let (tx_in, rx_in) = mpsc::channel::<i64>();
+    let (tx_out, rx_out) = mpsc::channel::<i64>();
+
+    let worker = thread::spawn(move || {
+        while let Ok(v) = rx_in.recv() {
+            if tx_out.send(v * v).is_err() {
+                break;
+            }
+        }
+    });
+
+    for value in values {
+        tx_in.send(value).map_err(|_| SimError::Parse)?;
+    }
+    drop(tx_in);
+
+    let mut total = 0_i64;
+    for squared in rx_out {
+        total += squared;
+    }
+
+    worker.join().map_err(|_| SimError::Parse)?;
+    Ok(total)
+}
+
+// 28) pin-and-self-reference
+pub fn pin_vec_and_get_addr(values: Vec<i32>) -> (std::pin::Pin<Box<Vec<i32>>>, usize) {
+    let pinned = Box::pin(values);
+    let addr = pinned.as_ref().get_ref().as_ptr() as usize;
+    (pinned, addr)
+}
+
+// 29) async-timeouts-retries
+pub fn retry_with_limit<T, E, F>(attempts: usize, mut operation: F) -> Result<T, E>
+where
+    F: FnMut() -> Result<T, E>,
+{
+    assert!(attempts > 0, "attempts must be > 0");
+    let mut remaining = attempts;
+    loop {
+        match operation() {
+            Ok(v) => return Ok(v),
+            Err(err) if remaining > 1 => {
+                remaining -= 1;
+            }
+            Err(err) => return Err(err),
+        }
+    }
+}
+
+// 30) ffi-boundary-safety
+pub fn c_string_len(ptr: *const std::os::raw::c_char) -> Result<usize, SimError> {
+    if ptr.is_null() {
+        return Err(SimError::NullPtr);
+    }
+    let c_str = unsafe { std::ffi::CStr::from_ptr(ptr) };
+    c_str
+        .to_str()
+        .map(|s| s.len())
+        .map_err(|_| SimError::Parse)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::cell::RefCell;
     use std::collections::HashMap;
+    use std::ffi::CString;
+    use std::rc::Rc;
 
     #[test]
     fn normalizes_python_index() {
@@ -292,5 +375,53 @@ mod tests {
             required_positive_arg(&kwargs, "temperature_k"),
             Err(SimError::UnitMismatch)
         );
+    }
+
+    #[test]
+    fn interior_mutability_reports_borrow_conflict() {
+        let queue = Rc::new(RefCell::new(Vec::<String>::new()));
+        let _hold = queue.borrow_mut();
+        assert_eq!(
+            push_event_safely(&queue, "event-a"),
+            Err(SimError::BorrowConflict)
+        );
+    }
+
+    #[test]
+    fn concurrent_pipeline_squares_and_sums() {
+        assert_eq!(concurrent_square_sum(vec![1, 2, 3, 4]), Ok(30));
+        assert_eq!(concurrent_square_sum(vec![]), Ok(0));
+    }
+
+    #[test]
+    fn pinned_vector_address_is_stable() {
+        let (pinned, addr_before) = pin_vec_and_get_addr(vec![1, 2, 3]);
+        let addr_after = pinned.as_ref().get_ref().as_ptr() as usize;
+        assert_eq!(addr_before, addr_after);
+    }
+
+    #[test]
+    fn retries_until_success_or_exhaustion() {
+        let mut tries = 0usize;
+        let ok = retry_with_limit(3, || {
+            tries += 1;
+            if tries < 3 { Err(SimError::Timeout) } else { Ok(42) }
+        });
+        assert_eq!(ok, Ok(42));
+
+        let mut fails = 0usize;
+        let err: Result<i32, SimError> = retry_with_limit(2, || {
+            fails += 1;
+            Err(SimError::Timeout)
+        });
+        assert_eq!(err, Err(SimError::Timeout));
+        assert_eq!(fails, 2);
+    }
+
+    #[test]
+    fn c_string_boundary_checks() {
+        let msg = CString::new("rust").unwrap();
+        assert_eq!(c_string_len(msg.as_ptr()), Ok(4));
+        assert_eq!(c_string_len(std::ptr::null()), Err(SimError::NullPtr));
     }
 }
