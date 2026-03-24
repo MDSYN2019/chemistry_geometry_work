@@ -1,4 +1,4 @@
-# Practical Rustlings Exercises (20)
+# Practical Rustlings Exercises (25)
 
 These exercises are grouped by the skill gaps identified in your assessment.
 
@@ -160,6 +160,45 @@ These exercises are grouped by the skill gaps identified in your assessment.
   - unit/invariant strategy.
 
 **Done when:** another developer can understand and extend your design quickly.
+
+---
+
+## Track F — PyO3 / Python Interop from Rust
+
+### 21) `pyo3-function-signatures`
+**Focus:** ergonomic Python-callable signatures.
+- Design a `#[pyfunction]` API using `&str`, `Vec<f64>`, and optional keyword arguments.
+- Compare one strict signature and one permissive signature.
+
+**Done when:** call sites in Python are clear and Rust-side error cases are explicit.
+
+### 22) `python-index-semantics`
+**Focus:** Python negative-index behavior in Rust.
+- Implement index normalization (`-1` means last element, etc.).
+- Return clear errors for out-of-bounds access.
+
+**Done when:** tests cover positive, negative, and invalid indexes.
+
+### 23) `overflow-to-pyerr`
+**Focus:** safe arithmetic surfaced as Python exceptions.
+- Build a Rust helper using checked arithmetic.
+- Map overflow to a Python-facing error shape.
+
+**Done when:** overflow branches are test-covered and produce useful messages.
+
+### 24) `kwargs-validation`
+**Focus:** validating dynamic Python input.
+- Accept a dict-like structure (`kwargs`) with required/optional keys.
+- Convert and validate numbers (for example positive-only).
+
+**Done when:** missing keys, wrong types, and invalid ranges are distinguishable.
+
+### 25) `vectorized-bridge`
+**Focus:** batch operations over Python lists/tuples.
+- Implement a Rust batch transform suitable for `#[pyfunction]`.
+- Avoid unnecessary cloning and support empty inputs.
+
+**Done when:** function handles large inputs efficiently and tests include edge cases.
 
 ---
 
