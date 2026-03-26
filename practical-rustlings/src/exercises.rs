@@ -425,3 +425,270 @@ mod tests {
         assert_eq!(c_string_len(std::ptr::null()), Err(SimError::NullPtr));
     }
 }
+
+// 26) interior-mutability-bus
+use std::cell::RefCell;
+use std::rc::Rc;
+
+pub type SharedQueue<T> = Rc<RefCell<Vec<T>>>;
+
+pub fn push_event<T>(queue: &SharedQueue<T>, event: T) {
+    queue.borrow_mut().push(event);
+}
+
+// 27) concurrent-pipeline
+pub fn parse_transform_aggregate(lines: &[&str]) -> Result<i64, SimError> {
+    lines
+        .iter()
+        .map(|line| line.trim().parse::<i64>().map_err(|_| SimError::Parse))
+        .map(|value| value.map(|v| v * 2))
+        .try_fold(0_i64, |acc, value| {
+            value.and_then(|v| acc.checked_add(v).ok_or(SimError::Overflow))
+        })
+}
+
+// 28) pin-and-self-reference
+pub fn pin_boxed_value<T>(value: T) -> std::pin::Pin<Box<T>> {
+    Box::pin(value)
+}
+
+// 29) async-timeouts-retries
+pub fn retry_with_budget<T, E, F>(attempts: usize, mut op: F) -> Result<T, E>
+where
+    F: FnMut() -> Result<T, E>,
+{
+    assert!(attempts > 0, "attempt budget must be > 0");
+    let mut last_error = None;
+    for _ in 0..attempts {
+        match op() {
+            Ok(value) => return Ok(value),
+            Err(err) => last_error = Some(err),
+        }
+    }
+    Err(last_error.expect("attempt budget guarantees at least one error"))
+}
+
+// 30) ffi-boundary-safety
+pub fn c_string_ptr_len(ptr: *const std::os::raw::c_char) -> Result<usize, SimError> {
+    if ptr.is_null() {
+        return Err(SimError::NullPtr);
+    }
+
+    // SAFETY: pointer nullness is checked above; CStr validates termination/UTF-8 below.
+    let cstr = unsafe { std::ffi::CStr::from_ptr(ptr) };
+    let text = cstr.to_str().map_err(|_| SimError::Parse)?;
+    Ok(text.len())
+}
+
+// 41) const-generics-window
+pub fn moving_average_3(input: &[f64]) -> Vec<f64> {
+    if input.len() < 3 {
+        return Vec::new();
+    }
+    input.windows(3).map(|w| (w[0] + w[1] + w[2]) / 3.0).collect()
+}
+
+// 42) phantom-type-phase
+pub struct Kelvin;
+pub struct Celsius;
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Temperature<Unit> {
+    pub value: f64,
+    _unit: std::marker::PhantomData<Unit>,
+}
+
+pub fn celsius(v: f64) -> Temperature<Celsius> {
+    Temperature {
+        value: v,
+        _unit: std::marker::PhantomData,
+    }
+}
+
+pub fn to_kelvin(t: Temperature<Celsius>) -> Temperature<Kelvin> {
+    Temperature {
+        value: t.value + 273.15,
+        _unit: std::marker::PhantomData,
+    }
+}
+
+// 43) iterator-chunking
+pub fn chunk_sum(values: &[i64], chunk_size: usize) -> Vec<i64> {
+    if chunk_size == 0 {
+        return Vec::new();
+    }
+    values
+        .chunks(chunk_size)
+        .map(|chunk| chunk.iter().sum())
+        .collect()
+}
+
+// 44) serde-boundary-plan
+pub fn parse_key_value_line(line: &str) -> Result<(&str, &str), SimError> {
+    line.split_once('=').ok_or(SimError::Parse)
+}
+
+// 45) deterministic-rng-injection
+pub trait RngLike {
+    fn next_u32(&mut self) -> u32;
+}
+
+pub fn random_in_range(rng: &mut impl RngLike, upper_exclusive: u32) -> Result<u32, SimError> {
+    if upper_exclusive == 0 {
+        return Err(SimError::OutOfBounds);
+    }
+    Ok(rng.next_u32() % upper_exclusive)
+}
+
+// 46) btreemap-vs-hashmap
+pub fn sorted_word_counts(words: &[&str]) -> std::collections::BTreeMap<String, usize> {
+    let mut counts = std::collections::BTreeMap::new();
+    for word in words {
+        *counts.entry((*word).to_owned()).or_insert(0) += 1;
+    }
+    counts
+}
+
+// 47) saturating-vs-checked
+pub fn saturating_accumulate_u8(values: &[u8]) -> u8 {
+    values
+        .iter()
+        .copied()
+        .fold(0_u8, |acc, v| acc.saturating_add(v))
+}
+
+// 48) slice-pattern-matching
+pub fn classify_triplet(values: &[i32]) -> &'static str {
+    match values {
+        [a, b, c] if a <= b && b <= c => "nondecreasing",
+        [a, b, c] if a >= b && b >= c => "nonincreasing",
+        [_, _, _] => "mixed",
+        _ => "not-a-triplet",
+    }
+}
+
+// 49) binary-search-contract
+pub fn lower_bound(sorted: &[i64], target: i64) -> usize {
+    match sorted.binary_search(&target) {
+        Ok(idx) | Err(idx) => idx,
+    }
+}
+
+// 50) small-dsl-evaluator
+pub fn eval_add_mul(expr: &str) -> Result<i64, SimError> {
+    let mut acc = 0_i64;
+    for term in expr.split('+') {
+        let product = term
+            .split('*')
+            .map(|p| p.trim().parse::<i64>().map_err(|_| SimError::Parse))
+            .try_fold(1_i64, |acc, v| {
+                v.and_then(|n| acc.checked_mul(n).ok_or(SimError::Overflow))
+            })?;
+        acc = acc.checked_add(product).ok_or(SimError::Overflow)?;
+    }
+    Ok(acc)
+}
+
+
+// 51) trait-object-dispatch
+pub trait Metric {
+    fn score(&self, x: f64) -> f64;
+}
+
+pub fn sum_metric(metric: &dyn Metric, xs: &[f64]) -> f64 {
+    xs.iter().map(|&x| metric.score(x)).sum()
+}
+
+// 52) enum-driven-dispatch
+#[derive(Debug, Clone, Copy)]
+pub enum Transform {
+    Square,
+    Abs,
+    Negate,
+}
+
+pub fn apply_transform(t: Transform, x: f64) -> f64 {
+    match t {
+        Transform::Square => x * x,
+        Transform::Abs => x.abs(),
+        Transform::Negate => -x,
+    }
+}
+
+// 53) builder-default-overrides
+#[derive(Debug, Clone, Copy)]
+pub struct SolverConfig {
+    pub dt: f64,
+    pub steps: usize,
+}
+
+impl Default for SolverConfig {
+    fn default() -> Self {
+        Self { dt: 0.01, steps: 100 }
+    }
+}
+
+pub fn config_with_steps(steps: usize) -> Result<SolverConfig, SimError> {
+    if steps == 0 {
+        return Err(SimError::OutOfBounds);
+    }
+    Ok(SolverConfig { steps, ..SolverConfig::default() })
+}
+
+// 54) derive-more-manual-impl
+#[derive(Debug, Clone, PartialEq)]
+pub struct ParticleState {
+    pub id: usize,
+    pub energy: f64,
+}
+
+impl Eq for ParticleState {}
+
+// 55) parsing-state-machine
+pub fn parse_pair(line: &str) -> Result<(i64, i64), SimError> {
+    let (a, b) = line.split_once(':').ok_or(SimError::Parse)?;
+    let x = a.trim().parse::<i64>().map_err(|_| SimError::Parse)?;
+    let y = b.trim().parse::<i64>().map_err(|_| SimError::Parse)?;
+    Ok((x, y))
+}
+
+// 56) result-collect-partition
+pub fn collect_ok_values(values: &[&str]) -> (Vec<i64>, usize) {
+    let mut oks = Vec::new();
+    let mut errs = 0usize;
+    for v in values {
+        match v.parse::<i64>() {
+            Ok(n) => oks.push(n),
+            Err(_) => errs += 1,
+        }
+    }
+    (oks, errs)
+}
+
+// 57) lifetime-carrying-view
+pub fn first_token<'a>(line: &'a str) -> Option<&'a str> {
+    line.split_whitespace().next()
+}
+
+// 58) path-dependent-errors
+pub fn ratio(numerator: f64, denominator: f64) -> Result<f64, SimError> {
+    if denominator == 0.0 {
+        return Err(SimError::NonConvergent);
+    }
+    Ok(numerator / denominator)
+}
+
+// 59) map-entry-api
+pub fn increment_counter(map: &mut std::collections::HashMap<String, usize>, key: &str) {
+    *map.entry(key.to_string()).or_insert(0) += 1;
+}
+
+// 60) mini-benchmark-harness
+pub fn run_n_times<F>(n: usize, mut f: F)
+where
+    F: FnMut(),
+{
+    for _ in 0..n {
+        f();
+    }
+}
