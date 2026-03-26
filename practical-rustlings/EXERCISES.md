@@ -1,4 +1,4 @@
-# Practical Rustlings Exercises (40)
+# Practical Rustlings Exercises (60)
 
 These exercises are grouped by the skill gaps identified in your assessment.
 
@@ -305,9 +305,159 @@ These exercises are grouped by the skill gaps identified in your assessment.
 
 ---
 
+
+
+## Track I — Collections / Data Processing
+
+### 41) `const-generics-window`
+**Focus:** fixed-size windows and predictable aggregation.
+- Build moving-average helpers over contiguous windows.
+- Compare ergonomics of specialized (`N=3`) vs generic signatures.
+
+**Done when:** short and long slices are both handled cleanly.
+
+### 42) `phantom-type-phase`
+**Focus:** marker types to prevent phase/unit confusion.
+- Model at least two temperature phases with phantom types.
+- Permit only explicit conversion steps.
+
+**Done when:** mixed-phase usage fails at compile-time.
+
+### 43) `iterator-chunking`
+**Focus:** chunk-wise transformations with `chunks` and iterators.
+- Sum or reduce each chunk independently.
+- Define behavior when final chunk is shorter.
+
+**Done when:** edge cases (`chunk_size = 0`, uneven input) are tested.
+
+### 44) `serde-boundary-plan`
+**Focus:** parsing boundaries before domain logic.
+- Parse `key=value` records into typed domain fields.
+- Separate parse errors from semantic validation errors.
+
+**Done when:** parser helpers can be reused without pulling in business logic.
+
+### 45) `deterministic-rng-injection`
+**Focus:** testability through dependency injection.
+- Define a tiny RNG trait and inject it into domain code.
+- Use deterministic fake RNG in tests.
+
+**Done when:** behavior is reproducible and independent from global randomness.
+
+## Track J — Algorithmic Fluency / Stdlib Mastery
+
+### 46) `btreemap-vs-hashmap`
+**Focus:** choosing map semantics intentionally.
+- Implement counting with both `HashMap` and `BTreeMap`.
+- Compare deterministic ordering vs average-case speed.
+
+**Done when:** API docs explain the chosen map tradeoff.
+
+### 47) `saturating-vs-checked`
+**Focus:** overflow strategy as an API contract.
+- Implement one saturating and one checked accumulator.
+- Document where each behavior is appropriate.
+
+**Done when:** callers can clearly choose desired overflow policy.
+
+### 48) `slice-pattern-matching`
+**Focus:** expressive branching with slice patterns.
+- Classify fixed-length input patterns with guarded matches.
+- Keep fallback behavior explicit.
+
+**Done when:** pattern branches are exhaustive and readable.
+
+### 49) `binary-search-contract`
+**Focus:** lower-bound style APIs and sorted preconditions.
+- Wrap `binary_search` into a stable insertion-point helper.
+- Clarify behavior for hit and miss paths.
+
+**Done when:** contract is documented and unit-tested on duplicates.
+
+### 50) `small-dsl-evaluator`
+**Focus:** lightweight parsing + safe arithmetic.
+- Evaluate a tiny arithmetic DSL (for example `+` and `*`).
+- Use checked math to surface overflow errors.
+
+**Done when:** parser failures and overflow paths map to explicit error variants.
+
+
+
+## Track K — Production Rust Workflow Topics
+
+### 51) `trait-object-dispatch`
+**Focus:** dynamic dispatch and trait-object boundaries.
+- Pass behavior as `&dyn Trait` and evaluate call-site ergonomics.
+- Compare with generic dispatch for hot loops.
+
+**Done when:** tradeoffs are documented and both forms compile cleanly.
+
+### 52) `enum-driven-dispatch`
+**Focus:** explicit strategy selection via enums.
+- Model transform behavior with an enum and `match`.
+- Keep exhaustiveness checks working for future variants.
+
+**Done when:** adding a new strategy yields clear compiler guidance.
+
+### 53) `builder-default-overrides`
+**Focus:** safe defaults with explicit overrides.
+- Add a config type with useful defaults.
+- Validate user overrides before building runtime state.
+
+**Done when:** invalid overrides fail early with structured errors.
+
+### 54) `derive-more-manual-impl`
+**Focus:** mixing derives with hand-written trait impls.
+- Use `derive` where possible and implement remaining traits manually.
+- Explain correctness constraints for manual impls.
+
+**Done when:** semantics are clear and trait impl set is coherent.
+
+### 55) `parsing-state-machine`
+**Focus:** incremental parsing with stable contracts.
+- Parse a small structured string (`a:b`) with robust error handling.
+- Isolate parse helpers from domain logic.
+
+**Done when:** malformed inputs are rejected deterministically.
+
+### 56) `result-collect-partition`
+**Focus:** gathering successes while counting failures.
+- Partition parsed values into accepted/rejected groups.
+- Keep error accounting cheap and explicit.
+
+**Done when:** caller can inspect both output values and failure count.
+
+### 57) `lifetime-carrying-view`
+**Focus:** returning borrowed views without allocations.
+- Expose borrowed token slices tied to input lifetime.
+- Avoid unnecessary `String` allocations.
+
+**Done when:** API conveys borrowing constraints directly in signature.
+
+### 58) `path-dependent-errors`
+**Focus:** domain-specific error mapping.
+- Map distinct failure paths to distinct error variants.
+- Keep error branches easy to pattern-match by caller.
+
+**Done when:** each branch has a test and clear semantic meaning.
+
+### 59) `map-entry-api`
+**Focus:** `entry`-based in-place mutation.
+- Update counters atomically with `entry`.
+- Avoid extra lookups and temporary allocations.
+
+**Done when:** implementation uses one map lookup path.
+
+### 60) `mini-benchmark-harness`
+**Focus:** repeatable local performance probes.
+- Build a tiny repeat-run harness for closures.
+- Keep interface generic and zero-cost in release mode.
+
+**Done when:** harness is reusable across prior exercises.
+
 ## Starter + reference code in this repo
 
-- `src/exercises.rs` provides starter APIs for exercises 1–30 in this document.
+- `src/exercises.rs` provides starter APIs for exercises 1–30 and 41–60 in this document.
 - `24_advanced_patterns/` provides an additional 10 file-based drills (31–40).
 - `src/references.rs` provides compact, working references for selected exercises (transpose, typestate builder, units).
 

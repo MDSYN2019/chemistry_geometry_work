@@ -26,3 +26,5 @@
 | clippy                 | Appendix D          |
 | conversions            | n/a                 |
 | advanced_patterns      | §15-17, §20         |
+| collections_drills      | n/a                 |
+| algorithmic_patterns    | n/a                 |
