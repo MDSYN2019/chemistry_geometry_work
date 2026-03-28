@@ -1,4 +1,4 @@
-# Practical Rustlings Exercises (60)
+# Practical Rustlings Exercises (65)
 
 These exercises are grouped by the skill gaps identified in your assessment.
 
@@ -455,9 +455,46 @@ These exercises are grouped by the skill gaps identified in your assessment.
 
 **Done when:** harness is reusable across prior exercises.
 
+## Track L — `?` Operator Mastery
+
+### 61) `question-mark-boundary`
+**Focus:** understanding where `?` is legal.
+- Write one function that fails to compile with `?` in a `fn -> i32`.
+- Refactor it into `fn -> Result<i32, E>` and explain the change.
+
+**Done when:** you can explain, in your own words, why return type compatibility is required.
+
+### 62) `option-to-result-bridge`
+**Focus:** using `ok_or`/`ok_or_else` before `?`.
+- Parse config from a map where keys are optional.
+- Convert missing values (`Option`) into domain errors (`Result`) and propagate with `?`.
+
+**Done when:** missing key and parse failures produce distinct error variants.
+
+### 63) `result-to-option-bridge`
+**Focus:** using `?` with `Option`.
+- Implement a function returning `Option<T>` that calls helpers returning `Option`.
+- Compare with an equivalent `Result` version and note tradeoffs.
+
+**Done when:** both versions pass tests and the loss of error detail is explicit.
+
+### 64) `error-conversion-with-from`
+**Focus:** implicit conversion during `?` propagation.
+- Define two error enums and implement `From<InnerErr> for OuterErr`.
+- Use `?` across helper calls without manual `map_err`.
+
+**Done when:** conversion happens automatically and tests cover multiple failure sources.
+
+### 65) `main-return-result`
+**Focus:** using `?` in executable entry points.
+- Change a small CLI-style `main` from panicking calls to `main() -> Result<(), E>`.
+- Propagate parse + I/O style errors with `?`.
+
+**Done when:** no `unwrap`/`expect` is needed in the happy path and error output remains useful.
+
 ## Starter + reference code in this repo
 
-- `src/exercises.rs` provides starter APIs for exercises 1–30 and 41–60 in this document.
+- `src/exercises.rs` provides starter APIs for exercises 1–30 and 41–65 in this document.
 - `24_advanced_patterns/` provides an additional 10 file-based drills (31–40).
 - `src/references.rs` provides compact, working references for selected exercises (transpose, typestate builder, units).
 

@@ -692,3 +692,68 @@ where
         f();
     }
 }
+
+// 61) question-mark-boundary
+pub fn parse_and_double_result(input: &str) -> Result<i64, SimError> {
+    let n = input.trim().parse::<i64>().map_err(|_| SimError::Parse)?;
+    Ok(n * 2)
+}
+
+// 62) option-to-result-bridge
+pub fn read_required_i64(
+    values: &std::collections::HashMap<String, String>,
+    key: &str,
+) -> Result<i64, SimError> {
+    let raw = values.get(key).ok_or(SimError::MissingField)?;
+    let parsed = raw.parse::<i64>().map_err(|_| SimError::Parse)?;
+    Ok(parsed)
+}
+
+// 63) result-to-option-bridge
+pub fn parse_pair_option(input: &str) -> Option<(i64, i64)> {
+    let (lhs, rhs) = input.split_once(':')?;
+    let a = lhs.trim().parse::<i64>().ok()?;
+    let b = rhs.trim().parse::<i64>().ok()?;
+    Some((a, b))
+}
+
+// 64) error-conversion-with-from
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ParserError {
+    Empty,
+    Parse,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum PipelineError {
+    BadInput(ParserError),
+    Overflow,
+}
+
+impl From<ParserError> for PipelineError {
+    fn from(value: ParserError) -> Self {
+        Self::BadInput(value)
+    }
+}
+
+pub fn parse_nonempty_i64(input: &str) -> Result<i64, ParserError> {
+    let trimmed = input.trim();
+    if trimmed.is_empty() {
+        return Err(ParserError::Empty);
+    }
+    trimmed.parse::<i64>().map_err(|_| ParserError::Parse)
+}
+
+pub fn parse_and_square_pipeline(input: &str) -> Result<i64, PipelineError> {
+    let n = parse_nonempty_i64(input)?;
+    n.checked_mul(n).ok_or(PipelineError::Overflow)
+}
+
+// 65) main-return-result
+pub fn cli_sum(args: &[String]) -> Result<i64, SimError> {
+    let first = args.first().ok_or(SimError::MissingField)?;
+    let second = args.get(1).ok_or(SimError::MissingField)?;
+    let a = first.parse::<i64>().map_err(|_| SimError::Parse)?;
+    let b = second.parse::<i64>().map_err(|_| SimError::Parse)?;
+    a.checked_add(b).ok_or(SimError::Overflow)
+}
