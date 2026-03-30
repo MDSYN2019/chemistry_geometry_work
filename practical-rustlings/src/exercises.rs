@@ -219,6 +219,185 @@ pub fn pyo3_scale(values: &[f64], scale: Option<f64>) -> Vec<f64> {
     values.iter().map(|v| v * factor).collect()
 }
 
+// 66) returns-simple-vs-log
+pub fn simple_return(prev: f64, next: f64) -> Result<f64, SimError> {
+    if prev <= 0.0 || next <= 0.0 {
+        return Err(SimError::OutOfBounds);
+    }
+    Ok(next / prev - 1.0)
+}
+
+pub fn log_return(prev: f64, next: f64) -> Result<f64, SimError> {
+    if prev <= 0.0 || next <= 0.0 {
+        return Err(SimError::OutOfBounds);
+    }
+    Ok((next / prev).ln())
+}
+
+// 67) rolling-volatility
+pub fn rolling_sample_volatility(returns: &[f64], window: usize) -> Result<Vec<f64>, SimError> {
+    if window < 2 || window > returns.len() {
+        return Err(SimError::OutOfBounds);
+    }
+
+    let mut out = Vec::with_capacity(returns.len() - window + 1);
+    for chunk in returns.windows(window) {
+        let mean = chunk.iter().sum::<f64>() / window as f64;
+        let var = chunk
+            .iter()
+            .map(|x| {
+                let d = x - mean;
+                d * d
+            })
+            .sum::<f64>()
+            / (window as f64 - 1.0);
+        out.push(var.sqrt());
+    }
+    Ok(out)
+}
+
+// 68) drawdown-tracker
+pub fn max_drawdown(equity_curve: &[f64]) -> Result<f64, SimError> {
+    if equity_curve.is_empty() {
+        return Err(SimError::MissingField);
+    }
+    if equity_curve.iter().any(|x| *x <= 0.0) {
+        return Err(SimError::OutOfBounds);
+    }
+
+    let mut peak = equity_curve[0];
+    let mut worst = 0.0f64;
+    for &value in equity_curve {
+        if value > peak {
+            peak = value;
+        }
+        let dd = (peak - value) / peak;
+        if dd > worst {
+            worst = dd;
+        }
+    }
+    Ok(worst)
+}
+
+// 69) position-sizer
+pub fn position_size(
+    equity: f64,
+    risk_fraction: f64,
+    stop_distance: f64,
+    point_value: f64,
+) -> Result<u64, SimError> {
+    if equity <= 0.0 || stop_distance <= 0.0 || point_value <= 0.0 {
+        return Err(SimError::OutOfBounds);
+    }
+    if !(0.0..=1.0).contains(&risk_fraction) {
+        return Err(SimError::OutOfBounds);
+    }
+
+    let risk_budget = equity * risk_fraction;
+    let units = (risk_budget / (stop_distance * point_value)).floor();
+    if !units.is_finite() || units < 0.0 {
+        return Err(SimError::Overflow);
+    }
+    Ok(units as u64)
+}
+
+// 70) pnl-attribution
+pub fn pnl(price_entry: f64, price_exit: f64, quantity: f64, multiplier: f64) -> f64 {
+    (price_exit - price_entry) * quantity * multiplier
+}
+
+// 71) order-book-spread
+pub fn spread_ticks(best_bid: f64, best_ask: f64, tick_size: f64) -> Result<f64, SimError> {
+    if tick_size <= 0.0 || best_bid <= 0.0 || best_ask <= 0.0 {
+        return Err(SimError::OutOfBounds);
+    }
+    if best_bid > best_ask {
+        return Err(SimError::InvalidTransition);
+    }
+    Ok((best_ask - best_bid) / tick_size)
+}
+
+pub fn spread_bps(best_bid: f64, best_ask: f64) -> Result<f64, SimError> {
+    if best_bid <= 0.0 || best_ask <= 0.0 {
+        return Err(SimError::OutOfBounds);
+    }
+    if best_bid > best_ask {
+        return Err(SimError::InvalidTransition);
+    }
+    let mid = 0.5 * (best_bid + best_ask);
+    Ok((best_ask - best_bid) / mid * 10_000.0)
+}
+
+// 72) ewma-risk-model
+pub fn ewma_variance_step(prev_variance: f64, return_t: f64, lambda: f64) -> Result<f64, SimError> {
+    if prev_variance < 0.0 || !(0.0..1.0).contains(&lambda) {
+        return Err(SimError::OutOfBounds);
+    }
+    Ok(lambda * prev_variance + (1.0 - lambda) * return_t * return_t)
+}
+
+pub fn ewma_variance_series(returns: &[f64], lambda: f64, seed_variance: f64) -> Result<Vec<f64>, SimError> {
+    if returns.is_empty() {
+        return Err(SimError::MissingField);
+    }
+    let mut out = Vec::with_capacity(returns.len());
+    let mut var = seed_variance;
+    for &r in returns {
+        var = ewma_variance_step(var, r, lambda)?;
+        out.push(var);
+    }
+    Ok(out)
+}
+
+// 73) black-scholes-baseline
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum OptionKind {
+    Call,
+    Put,
+}
+
+pub fn black_scholes_price(
+    kind: OptionKind,
+    spot: f64,
+    strike: f64,
+    rate: f64,
+    vol: f64,
+    time_years: f64,
+) -> Result<f64, SimError> {
+    if spot <= 0.0 || strike <= 0.0 || vol <= 0.0 || time_years <= 0.0 {
+        return Err(SimError::OutOfBounds);
+    }
+
+    let sqrt_t = time_years.sqrt();
+    let d1 = ((spot / strike).ln() + (rate + 0.5 * vol * vol) * time_years) / (vol * sqrt_t);
+    let d2 = d1 - vol * sqrt_t;
+    let nd1 = standard_normal_cdf(d1);
+    let nd2 = standard_normal_cdf(d2);
+    let discount = (-rate * time_years).exp();
+
+    let price = match kind {
+        OptionKind::Call => spot * nd1 - strike * discount * nd2,
+        OptionKind::Put => strike * discount * standard_normal_cdf(-d2) - spot * standard_normal_cdf(-d1),
+    };
+    Ok(price)
+}
+
+fn standard_normal_cdf(x: f64) -> f64 {
+    0.5 * (1.0 + erf_approx(x / std::f64::consts::SQRT_2))
+}
+
+fn erf_approx(x: f64) -> f64 {
+    let sign = x.signum();
+    let ax = x.abs();
+    let t = 1.0 / (1.0 + 0.3275911 * ax);
+    let y = 1.0
+        - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t
+            + 0.254829592)
+            * t
+            * (-ax * ax).exp();
+    sign * y
+}
+
 // 22) python-index-semantics
 pub fn normalize_py_index(len: usize, index: isize) -> Result<usize, SimError> {
     if len == 0 {

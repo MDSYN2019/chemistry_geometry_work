@@ -1,4 +1,4 @@
-# Practical Rustlings Exercises (65)
+# Practical Rustlings Exercises (73)
 
 These exercises are grouped by the skill gaps identified in your assessment.
 
@@ -492,9 +492,67 @@ These exercises are grouped by the skill gaps identified in your assessment.
 
 **Done when:** no `unwrap`/`expect` is needed in the happy path and error output remains useful.
 
+## Track M — Quant Rust Drills
+
+### 66) `returns-simple-vs-log`
+**Focus:** return conventions in quant pipelines.
+- Implement both simple returns and log returns.
+- Compare aggregation behavior and edge cases near zero prices.
+
+**Done when:** tests show expected return values and invalid price inputs are rejected.
+
+### 67) `rolling-volatility`
+**Focus:** fixed-window risk calculations.
+- Compute rolling sample volatility over a window length `n`.
+- Return an output aligned to the final index of each full window.
+
+**Done when:** output length and numeric values match hand-checked examples.
+
+### 68) `drawdown-tracker`
+**Focus:** path-dependent risk metrics.
+- Implement max drawdown calculation from an equity curve.
+- Track running peak and percentage drop from peak.
+
+**Done when:** monotonic-up and deep-drop paths are both covered by tests.
+
+### 69) `position-sizer`
+**Focus:** translating risk budget into shares/contracts.
+- Given equity, risk fraction, stop distance, and point value, compute position size.
+- Decide rounding policy explicitly (`floor`, `round`, etc.).
+
+**Done when:** invalid inputs are surfaced and sizing policy is documented.
+
+### 70) `pnl-attribution`
+**Focus:** decomposition and sign correctness.
+- Decompose PnL into `price_move * quantity * multiplier`.
+- Handle long/short sign conventions clearly.
+
+**Done when:** tests include long gain, short gain, and flat/no-change scenarios.
+
+### 71) `order-book-spread`
+**Focus:** market microstructure basics.
+- Validate top-of-book quotes (`best_bid <= best_ask`).
+- Compute spread in ticks and basis points.
+
+**Done when:** crossed/locked books are handled according to your API contract.
+
+### 72) `ewma-risk-model`
+**Focus:** stateful time-series estimation.
+- Implement an EWMA variance update (`lambda` decay).
+- Expose both one-step update and full-series helper.
+
+**Done when:** lambda boundary behavior is tested and numerically stable.
+
+### 73) `black-scholes-baseline`
+**Focus:** numerical finance with clear assumptions.
+- Implement call/put Black–Scholes pricing for non-dividend assets.
+- Keep units explicit (`time in years`, `vol annualized`).
+
+**Done when:** put-call parity holds approximately and obvious bad inputs return structured errors.
+
 ## Starter + reference code in this repo
 
-- `src/exercises.rs` provides starter APIs for exercises 1–30 and 41–65 in this document.
+- `src/exercises.rs` provides starter APIs for exercises 1–30 and 41–73 in this document.
 - `24_advanced_patterns/` provides an additional 10 file-based drills (31–40).
 - `src/references.rs` provides compact, working references for selected exercises (transpose, typestate builder, units).
 
