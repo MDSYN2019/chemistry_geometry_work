@@ -40,3 +40,15 @@
 | 35 | PyG | GraphGym config basics | `exercises/35_graphgym_config/graphgym_config.py` | `solutions/35_graphgym_config.py` |
 | 36 | PyG | GraphGym custom pooling registration | `exercises/36_graphgym_register/register_pooling.py` | `solutions/36_register_pooling.py` |
 | 37 | PyG | GraphGym YAML experiment setup | `exercises/37_graphgym_yaml/build_experiment_yaml.py` | `solutions/37_graphgym_yaml.py` |
+
+| 38 | PyTorch | Loss functions from logits | `exercises/38_losses_and_logits/losses_and_logits.py` | `solutions/38_losses_and_logits.py` |
+| 39 | PyTorch | Device + dtype alignment | `exercises/39_device_dtype/device_and_dtype.py` | `solutions/39_device_dtype.py` |
+| 40 | PyTorch | Eval mode + `torch.no_grad()` | `exercises/40_no_grad_inference/no_grad_eval.py` | `solutions/40_no_grad_eval.py` |
+| 41 | PyTorch | Forward hooks for activations | `exercises/41_hooks_and_features/forward_hook_capture.py` | `solutions/41_forward_hook_capture.py` |
+| 42 | PyTorch | Kaiming init + bias zeroing | `exercises/42_initialization/weight_init_strategies.py` | `solutions/42_weight_init_strategies.py` |
+| 43 | PyTorch | Gradient accumulation training loop | `exercises/43_gradient_accumulation/gradient_accumulation.py` | `solutions/43_gradient_accumulation.py` |
+| 44 | PyTorch | AMP with autocast + GradScaler | `exercises/44_amp_basics/amp_training_step.py` | `solutions/44_amp_training_step.py` |
+| 45 | PyTorch | `torch.compile` smoke workflow | `exercises/45_torch_compile/compile_smoke.py` | `solutions/45_compile_smoke.py` |
+| 46 | PyTorch | TorchScript export (`script`/`trace`) | `exercises/46_torchscript_export/torchscript_trace_script.py` | `solutions/46_torchscript_trace_script.py` |
+| 47 | PyTorch | Packed sequences for variable-length RNNs | `exercises/47_packed_sequences/packed_sequence_rnn.py` | `solutions/47_packed_sequence_rnn.py` |
+
