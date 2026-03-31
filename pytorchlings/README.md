@@ -20,6 +20,7 @@ A rustlings-style practice track for **PyTorch** and **PyTorch Geometric (PyG)**
 - Continue 31-34 for weighted, directed, bipartite, and cycle/tree graph workflows.
 - Add 35-37 for PyG GraphGym config, registration, and experiment YAML practice.
 - Complete 38-47 for comprehensive PyTorch engineering workflows (losses, hooks, initialization, accumulation, AMP, compile, TorchScript, packed sequences).
+- Continue 48-59 for advanced graph architecture coverage (GCN, GAT, GraphSAGE, GIN, spectral, pooling, hyperbolic, dynamic, R-GCN, graph transformer, graph autoencoder, diffusion).
 
 ## Quick check command
 
@@ -49,3 +50,21 @@ Exercises 38-47 were added to cover production-focused PyTorch functionality tha
 - `torch.compile` runtime optimization API
 - TorchScript export (`script`/`trace`)
 - Variable-length sequence modeling with packed RNN inputs
+
+
+## Advanced graph architecture extension
+
+Exercises 48-59 extend PyG graph learning coverage across major model families:
+
+- GCN (explicit normalized adjacency)
+- GAT (attention-weight inspection)
+- GraphSAGE
+- Graph Isomorphism Network (GIN)
+- Spectral GNN (Chebyshev/Laplacian filtering)
+- Graph pooling (hierarchical + global)
+- Hyperbolic-inspired message passing
+- Dynamic temporal GNN (snapshot sequence processing)
+- Relational GCN (heterogeneous edge types)
+- Graph Transformer
+- Graph Autoencoder
+- Diffusion-style propagation (APPNP)
