@@ -52,3 +52,16 @@
 | 46 | PyTorch | TorchScript export (`script`/`trace`) | `exercises/46_torchscript_export/torchscript_trace_script.py` | `solutions/46_torchscript_trace_script.py` |
 | 47 | PyTorch | Packed sequences for variable-length RNNs | `exercises/47_packed_sequences/packed_sequence_rnn.py` | `solutions/47_packed_sequence_rnn.py` |
 
+
+| 48 | PyG | Explicit normalized-adjacency GCN | `exercises/48_gcn_normalized/gcn_normalized.py` | `solutions/48_gcn_normalized.py` |
+| 49 | PyG | GAT attention weight inspection | `exercises/49_gat_attention_weights/gat_attention_weights.py` | `solutions/49_gat_attention_weights.py` |
+| 50 | PyG | GraphSAGE mean aggregation | `exercises/50_graphsage_mean/graphsage_mean.py` | `solutions/50_graphsage_mean.py` |
+| 51 | PyG | Graph Isomorphism Network (GIN) | `exercises/51_gin_mlp/gin_mlp.py` | `solutions/51_gin_mlp.py` |
+| 52 | PyG | Spectral GNN via Chebyshev conv | `exercises/52_spectral_cheb/spectral_cheb.py` | `solutions/52_spectral_cheb.py` |
+| 53 | PyG | Graph pooling (TopK + global mean) | `exercises/53_graph_pooling/global_and_topk_pool.py` | `solutions/53_global_and_topk_pool.py` |
+| 54 | PyTorch | Hyperbolic-inspired tangent message passing | `exercises/54_hyperbolic_tangent/hyperbolic_tangent.py` | `solutions/54_hyperbolic_tangent.py` |
+| 55 | PyG | Dynamic temporal graph encoder (GCN+GRU) | `exercises/55_dynamic_graph_gru/dynamic_graph_gru.py` | `solutions/55_dynamic_graph_gru.py` |
+| 56 | PyG | Relational GCN (R-GCN) | `exercises/56_rgcn_hetero/rgcn_hetero.py` | `solutions/56_rgcn_hetero.py` |
+| 57 | PyG | Graph Transformer convolution | `exercises/57_graph_transformer/graph_transformer_conv.py` | `solutions/57_graph_transformer_conv.py` |
+| 58 | PyG | Graph Autoencoder (encode/decode) | `exercises/58_graph_autoencoder/graph_autoencoder.py` | `solutions/58_graph_autoencoder.py` |
+| 59 | PyG | Diffusion-based GNN (APPNP) | `exercises/59_diffusion_gnn/appnp_diffusion.py` | `solutions/59_appnp_diffusion.py` |
