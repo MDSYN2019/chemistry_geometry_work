@@ -1,6 +1,6 @@
 # py03lings
 
-A rustlings-style practice track for Python 3 fundamentals.
+A rustlings-style practice track for Python 3 fundamentals, including intro async exercises.
 
 ## How to use
 
