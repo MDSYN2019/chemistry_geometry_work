@@ -1,4 +1,4 @@
-# Practical Rustlings Exercises (65)
+# Practical Rustlings Exercises (71)
 
 These exercises are grouped by the skill gaps identified in your assessment.
 
@@ -492,9 +492,55 @@ These exercises are grouped by the skill gaps identified in your assessment.
 
 **Done when:** no `unwrap`/`expect` is needed in the happy path and error output remains useful.
 
+
+## Track M — Async Rust with Tokio
+
+### 66) `tokio-spawn-join`
+**Focus:** task spawning and structured result collection.
+- Spawn several async tasks with `tokio::spawn`.
+- Await all `JoinHandle`s and collect outputs.
+
+**Done when:** all task results are gathered deterministically and no handles are leaked.
+
+### 67) `tokio-shared-state`
+**Focus:** async-aware synchronization primitives.
+- Share mutable state using `Arc<tokio::sync::Mutex<T>>`.
+- Update state from multiple concurrently running tasks.
+
+**Done when:** final state is correct and locking points are minimal and explicit.
+
+### 68) `tokio-channel-pipeline`
+**Focus:** producer/consumer coordination with async channels.
+- Build a mini pipeline with `tokio::sync::mpsc`.
+- Ensure proper shutdown by dropping senders and draining receiver loops.
+
+**Done when:** pipeline terminates cleanly and aggregates expected values.
+
+
+### 69) `tokio-select-race`
+**Focus:** cancellation behavior with `tokio::select!`.
+- Race two operations and return the earliest completion.
+- Verify the losing branch is cancelled cleanly.
+
+**Done when:** earliest result is deterministic under controlled timing.
+
+### 70) `tokio-timeout-retry`
+**Focus:** resilient async orchestration.
+- Wrap operations in `tokio::time::timeout`.
+- Implement bounded retries for transient failures.
+
+**Done when:** timeout and retry behavior are both test-covered.
+
+### 71) `tokio-broadcast-shutdown`
+**Focus:** cooperative shutdown signaling.
+- Run multiple workers listening on `tokio::sync::broadcast`.
+- Send one shutdown signal and join workers predictably.
+
+**Done when:** all workers terminate without hangs and report completion.
+
 ## Starter + reference code in this repo
 
-- `src/exercises.rs` provides starter APIs for exercises 1–30 and 41–65 in this document.
+- `src/exercises.rs` provides starter APIs for exercises 1–30 and 41–71 in this document.
 - `24_advanced_patterns/` provides an additional 10 file-based drills (31–40).
 - `src/references.rs` provides compact, working references for selected exercises (transpose, typestate builder, units).
 
