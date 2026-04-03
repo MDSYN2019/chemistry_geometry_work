@@ -15,3 +15,14 @@ A rustlings-style practice track for Python 3 fundamentals, including intro asyn
 python py03lings/check.py
 python -m compileall py03lings/exercises py03lings/solutions
 ```
+
+
+## Linear programming track (AIMMS-style modeling in Python)
+
+For LP exercises 06-08, install PuLP first:
+
+```bash
+pip install pulp
+```
+
+These exercises focus on optimization modeling patterns similar to AIMMS, but fully in Python.

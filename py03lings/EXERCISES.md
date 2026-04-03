@@ -9,3 +9,7 @@
 
 | 04 | asyncio basics (`async`/`await`) | `exercises/04_async_sleep/async_sleep.py` | `solutions/04_async_sleep.py` |
 | 05 | async concurrency with `gather` | `exercises/05_async_gather/async_gather.py` | `solutions/05_async_gather.py` |
+
+| 06 | linear programming (blending model with PuLP) | `exercises/06_lp_blending/lp_blending.py` | `solutions/06_lp_blending.py` |
+| 07 | linear programming (multi-period planning) | `exercises/07_lp_production_planning/lp_production_planning.py` | `solutions/07_lp_production_planning.py` |
+| 08 | linear programming (transportation model) | `exercises/08_lp_transportation/lp_transportation.py` | `solutions/08_lp_transportation.py` |
