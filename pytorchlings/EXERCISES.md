@@ -65,3 +65,5 @@
 | 57 | PyG | Graph Transformer convolution | `exercises/57_graph_transformer/graph_transformer_conv.py` | `solutions/57_graph_transformer_conv.py` |
 | 58 | PyG | Graph Autoencoder (encode/decode) | `exercises/58_graph_autoencoder/graph_autoencoder.py` | `solutions/58_graph_autoencoder.py` |
 | 59 | PyG | Diffusion-based GNN (APPNP) | `exercises/59_diffusion_gnn/appnp_diffusion.py` | `solutions/59_appnp_diffusion.py` |
+| 60 | PyTorch + Optuna | Hyperparameter tuning for MLP classification | `exercises/60_optuna_tuning/optuna_pytorch_mlp.py` | `solutions/60_optuna_pytorch_mlp.py` |
+| 61 | Scikit-learn + Optuna | Tune RandomForest baseline with CV | `exercises/61_optuna_baselines/optuna_sklearn_baseline.py` | `solutions/61_optuna_sklearn_baseline.py` |

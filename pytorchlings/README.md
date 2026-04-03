@@ -21,6 +21,7 @@ A rustlings-style practice track for **PyTorch** and **PyTorch Geometric (PyG)**
 - Add 35-37 for PyG GraphGym config, registration, and experiment YAML practice.
 - Complete 38-47 for comprehensive PyTorch engineering workflows (losses, hooks, initialization, accumulation, AMP, compile, TorchScript, packed sequences).
 - Continue 48-59 for advanced graph architecture coverage (GCN, GAT, GraphSAGE, GIN, spectral, pooling, hyperbolic, dynamic, R-GCN, graph transformer, graph autoencoder, diffusion).
+- Add 60-61 for Optuna-based hyperparameter optimization (PyTorch MLP + scikit-learn baseline tuning).
 
 ## Quick check command
 
@@ -68,3 +69,12 @@ Exercises 48-59 extend PyG graph learning coverage across major model families:
 - Graph Transformer
 - Graph Autoencoder
 - Diffusion-style propagation (APPNP)
+
+## Hyperparameter optimization extension
+
+Exercises 60-61 introduce Optuna workflows so learners can practice search-space design and reproducible studies:
+
+- Optuna trial definitions for PyTorch model architecture/training hyperparameters
+- Intermediate metric reporting + pruning hooks
+- TPE and random samplers with fixed seeds
+- Non-neural baseline tuning with scikit-learn cross-validation
