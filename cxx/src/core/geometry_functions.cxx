@@ -20,6 +20,8 @@
 #include <Eigen/Dense>
 #include <Eigen/Eigenvalues>
 
+#include "geometry_functions.hpp"
+
 using namespace Eigen;
 
 typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Matrix_New;
@@ -52,7 +54,7 @@ bool isSymmetric(const Eigen::MatrixXd& matrix, double epsilon = 1e-10) {
 }
 
 
-double Rij(double &Xi, double &Xj, double &Yi, double &Yj, double &Zi, double &Zj) {
+double Rij(const double& Xi, const double& Xj, const double& Yi, const double& Yj, const double& Zi, const double& Zj) {
   /*
     Compute interatomic distances here
   */
@@ -60,7 +62,7 @@ double Rij(double &Xi, double &Xj, double &Yi, double &Yj, double &Zi, double &Z
   return Rij;
 }
 
-double bond_angles(double &Xi, double &Xj, double &Xk,  double &Yi, double &Yj, double &Yk,  double &Zi, double &Zj, double &Zk) {
+double bond_angles(const double& Xi, const double& Xj, const double& Xk,  const double& Yi, const double& Yj, const double& Yk,  const double& Zi, const double& Zj, const double& Zk) {
   /*
     
    */
@@ -85,12 +87,12 @@ double bond_angles(double &Xi, double &Xj, double &Xk,  double &Yi, double &Yj, 
   return dot_product;
 }
 
-double out_of_plane_angle(double &Xi, double &Xj,
-		       double &Xk, double &Xl,
-		       double &Yi, double &Yj,
-		       double &Yk, double &Yl,
-		       double &Zi, double &Zj,
-		       double &Zk, double &Zl) {
+double out_of_plane_angle(const double& Xi, const double& Xj,
+		       const double& Xk, const double& Xl,
+		       const double& Yi, const double& Yj,
+		       const double& Yk, const double& Yl,
+		       const double& Zi, const double& Zj,
+		       const double& Zk, const double& Zl) {
 
   double sin_denominator;
   double Rkjval, Rklval, Rkival = 0;  
@@ -129,12 +131,12 @@ double out_of_plane_angle(double &Xi, double &Xj,
   return ans;
 }
 
-double torsion_angle(double &Xi, double &Xj,
-		     double &Xk, double &Xl,
-		     double &Yi, double &Yj,
-		     double &Yk, double &Yl,
-		     double &Zi, double &Zj,
-		     double &Zk, double &Zl) {
+double torsion_angle(const double& Xi, const double& Xj,
+		     const double& Xk, const double& Xl,
+		     const double& Yi, const double& Yj,
+		     const double& Yk, const double& Yl,
+		     const double& Zi, const double& Zj,
+		     const double& Zk, const double& Zl) {
   /*
     Compute the torsion angle
   */
@@ -201,7 +203,7 @@ std::tuple<double, double, double> center_of_mass(std::vector<std::vector<double
   return std::make_tuple(x_mass/total_mass, y_mass/total_mass, z_mass/total_mass); 
 }
 
-void read_coordinates(std::string &structure, std::vector<std::vector<double> >& vec_input) {
+void read_coordinates(const std::string& structure, std::vector<std::vector<double> >& vec_input) {
   /*
     Read the coordinate/hessian files
   */  
@@ -224,7 +226,7 @@ void read_coordinates(std::string &structure, std::vector<std::vector<double> >&
   input.close(); // always close file after reading
 }
 
-void read_coordinates_hamiltonian(std::string &structure, std::vector<std::vector<double> >& vec_input) {
+void read_coordinates_hamiltonian(const std::string& structure, std::vector<std::vector<double> >& vec_input) {
   /*
     Read the coordinate/hessian files
   */  
@@ -245,7 +247,7 @@ void read_coordinates_hamiltonian(std::string &structure, std::vector<std::vecto
   input.close(); // always close file after reading
 }
 
-void moments_of_inertia(std::vector<std::vector<double> >& VecInput) {
+Eigen::Vector3d moments_of_inertia(std::vector<std::vector<double> >& VecInput) {
 
   /*
     The moments of inertia are computed as follows, as listed here:
@@ -265,8 +267,8 @@ void moments_of_inertia(std::vector<std::vector<double> >& VecInput) {
         
   */
   
-  double I_xx, I_yy, I_zz ;
-  double I_xy, I_xz, I_yz;
+  double I_xx = 0.0, I_yy = 0.0, I_zz = 0.0;
+  double I_xy = 0.0, I_xz = 0.0, I_yz = 0.0;
   // Intertia Matrix 
   Eigen::MatrixXd I(3, 3);
   I.setZero(); 
@@ -310,7 +312,7 @@ void moments_of_inertia(std::vector<std::vector<double> >& VecInput) {
   MatrixXd diagonal_matrix = evals.asDiagonal();
   // Diagonalize the matrix: DiagonalMatrix = V * DiagonalMatrix * V^-1
   diagonal_matrix = evecs * diagonal_matrix * evecs.inverse();
-  //return diagonalizedMatrix;
+  return solver.eigenvalues();
 }
 
 
