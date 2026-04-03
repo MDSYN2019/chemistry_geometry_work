@@ -9,3 +9,8 @@
 
 | 04 | asyncio basics (`async`/`await`) | `exercises/04_async_sleep/async_sleep.py` | `solutions/04_async_sleep.py` |
 | 05 | async concurrency with `gather` | `exercises/05_async_gather/async_gather.py` | `solutions/05_async_gather.py` |
+
+| 06 | dataclasses intro | `exercises/06_dataclasses_intro/student_record.py` | `solutions/06_student_record.py` |
+| 07 | staticmethod factories | `exercises/07_staticmethod_factory/temperature.py` | `solutions/07_temperature.py` |
+| 08 | pydantic model validation | `exercises/08_pydantic_models/order_model.py` | `solutions/08_order_model.py` |
+| 09 | dataclass + staticmethod + pydantic | `exercises/09_dataclass_staticmethod_pydantic/inventory_bridge.py` | `solutions/09_inventory_bridge.py` |
