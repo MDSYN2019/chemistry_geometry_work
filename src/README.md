@@ -14,6 +14,7 @@ This `src/` tree is now organized as a **PyTorch practice workspace** plus relat
 - `simulations/`: simulation-focused code snippets.
 - `data/`: local data artifacts used by scripts.
 - `legacy/`: logs or historical one-off files retained for reference.
+- `practice/platform_engineering/`: C#/Python distributed systems and platform engineering practice pack.
 
 ## Notes
 
