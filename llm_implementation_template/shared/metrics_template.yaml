@@ -1,0 +1,18 @@
+# Shared metrics catalog for all stages
+quality:
+  - answer_correctness
+  - groundedness
+  - schema_validity
+reliability:
+  - failure_rate
+  - timeout_rate
+performance:
+  - p50_latency_ms
+  - p95_latency_ms
+cost:
+  - avg_input_tokens
+  - avg_output_tokens
+  - cost_per_request_usd
+business:
+  - task_success_rate
+  - user_resolution_rate
