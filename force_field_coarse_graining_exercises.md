@@ -212,6 +212,119 @@ You need a CG model for a solvated polymer system to study self-assembly over mi
 
 ---
 
+## Example A: PyTorch coarse-graining baseline (no GNN)
+
+Use this when you want a simple, interpretable baseline where each CG bead force is predicted from flattened bead coordinates and pair distances.
+
+```python
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader, TensorDataset
+
+# Toy data: 1,000 snapshots, 6 CG beads, 3D coordinates
+n_frames, n_beads = 1000, 6
+R = torch.randn(n_frames, n_beads, 3)  # CG coordinates
+F_ref = torch.randn(n_frames, n_beads, 3)  # reference mapped forces
+
+def pairwise_distances(x):
+    # x: [B, N, 3]
+    diff = x[:, :, None, :] - x[:, None, :, :]
+    d = torch.linalg.norm(diff + 1e-12, dim=-1)  # [B, N, N]
+    iu = torch.triu_indices(x.size(1), x.size(1), offset=1)
+    return d[:, iu[0], iu[1]]  # upper-triangle distances [B, N*(N-1)/2]
+
+class CGForceMLP(nn.Module):
+    def __init__(self, n_beads):
+        super().__init__()
+        n_pairs = n_beads * (n_beads - 1) // 2
+        in_dim = n_beads * 3 + n_pairs
+        out_dim = n_beads * 3
+        self.net = nn.Sequential(
+            nn.Linear(in_dim, 256),
+            nn.ReLU(),
+            nn.Linear(256, 256),
+            nn.ReLU(),
+            nn.Linear(256, out_dim),
+        )
+
+    def forward(self, R):
+        B = R.size(0)
+        feat = torch.cat([R.reshape(B, -1), pairwise_distances(R)], dim=-1)
+        return self.net(feat).reshape(B, n_beads, 3)
+
+dataset = TensorDataset(R, F_ref)
+loader = DataLoader(dataset, batch_size=64, shuffle=True)
+model = CGForceMLP(n_beads=n_beads)
+opt = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+for epoch in range(20):
+    for Rb, Fb in loader:
+        pred = model(Rb)
+        loss = ((pred - Fb) ** 2).mean()  # force-matching loss
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+```
+
+**What this captures well:** quick prototype for force matching and sanity checks.  
+**Main limitation:** no explicit message passing, so it does not naturally encode graph locality or permutation symmetries.
+
+---
+
+## Example B: PyTorch Geometric coarse-graining with a GNN
+
+Use this when you want bead-bead interactions learned through graph message passing (better inductive bias for molecular systems).
+
+```python
+import torch
+import torch.nn as nn
+from torch_geometric.data import Data
+from torch_geometric.loader import DataLoader
+from torch_geometric.nn import GCNConv
+
+# Build a toy CG graph: 6 beads in a chain + skip connections
+edge_index = torch.tensor([
+    [0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 0, 2, 2, 4],
+    [1, 0, 2, 1, 3, 2, 4, 3, 5, 4, 2, 0, 4, 2],
+], dtype=torch.long)
+
+def make_graph():
+    x = torch.randn(6, 3)          # node features: CG coordinates
+    y = torch.randn(6, 3)          # target: mapped forces
+    return Data(x=x, edge_index=edge_index, y=y)
+
+train_graphs = [make_graph() for _ in range(1000)]
+loader = DataLoader(train_graphs, batch_size=32, shuffle=True)
+
+class CGGNN(nn.Module):
+    def __init__(self, hidden=64):
+        super().__init__()
+        self.conv1 = GCNConv(3, hidden)
+        self.conv2 = GCNConv(hidden, hidden)
+        self.head = nn.Linear(hidden, 3)  # predict Fx,Fy,Fz per bead
+
+    def forward(self, data):
+        h = torch.relu(self.conv1(data.x, data.edge_index))
+        h = torch.relu(self.conv2(h, data.edge_index))
+        return self.head(h)
+
+model = CGGNN(hidden=64)
+opt = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+for epoch in range(20):
+    for batch in loader:
+        pred = model(batch)
+        loss = ((pred - batch.y) ** 2).mean()  # force-matching loss
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+```
+
+**What this captures well:** local environment effects and topology-aware interactions via message passing.  
+**Main limitation:** requires graph construction choices (cutoffs/edges) that can affect stability and transferability.
+
+---
+
 ## Suggested answer discipline
 
 For each exercise, write:
