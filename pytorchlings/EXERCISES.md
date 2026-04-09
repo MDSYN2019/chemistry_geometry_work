@@ -67,3 +67,7 @@
 | 59 | PyG | Diffusion-based GNN (APPNP) | `exercises/59_diffusion_gnn/appnp_diffusion.py` | `solutions/59_appnp_diffusion.py` |
 | 60 | PyTorch + Optuna | Hyperparameter tuning for MLP classification | `exercises/60_optuna_tuning/optuna_pytorch_mlp.py` | `solutions/60_optuna_pytorch_mlp.py` |
 | 61 | Scikit-learn + Optuna | Tune RandomForest baseline with CV | `exercises/61_optuna_baselines/optuna_sklearn_baseline.py` | `solutions/61_optuna_sklearn_baseline.py` |
+| 62 | PyTorch | Masked-token transformer for toy chemistry strings | `exercises/62_masked_modeling_transformer/masked_token_model.py` | `solutions/62_masked_modeling_transformer.py` |
+| 63 | PyTorch | Property-conditioned sequence generation (GRU) | `exercises/63_conditional_generation/property_conditioned_generation.py` | `solutions/63_property_conditioned_generation.py` |
+| 64 | PyTorch | Hill-climb eval loop for scientific MAE optimization | `exercises/64_hillclimb_evals/experiment_hillclimb.py` | `solutions/64_eval_hillclimb.py` |
+| 65 | PyTorch | Slice-based scientific error analysis + reporting | `exercises/65_science_error_analysis/scientific_error_analysis.py` | `solutions/65_scientific_error_analysis.py` |
