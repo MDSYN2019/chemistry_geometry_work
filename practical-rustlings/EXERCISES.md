@@ -1,4 +1,4 @@
-# Practical Rustlings Exercises (71)
+# Practical Rustlings Exercises (90)
 
 These exercises are grouped by the skill gaps identified in your assessment.
 
@@ -538,9 +538,147 @@ These exercises are grouped by the skill gaps identified in your assessment.
 
 **Done when:** all workers terminate without hangs and report completion.
 
+
+
+## Track N — Systems Programming (Low-level + OS-facing)
+
+### 72) `ring-buffer-bytes`
+**Focus:** fixed-capacity FIFO buffers without reallocations.
+- Implement byte-oriented push/pop semantics over a circular buffer.
+- Handle full/empty cases explicitly.
+
+**Done when:** wrap-around behavior is correct and no allocations occur after initialization.
+
+### 73) `endian-encoding`
+**Focus:** explicit endianness at protocol boundaries.
+- Encode/decode integer headers in little-endian format.
+- Add cross-check tests against known byte sequences.
+
+**Done when:** round-trip tests pass and byte order is documented.
+
+### 74) `packed-header-layout`
+**Focus:** layout predictability for wire formats.
+- Define a compact header struct with explicit field serialization.
+- Keep layout assumptions isolated from business logic.
+
+**Done when:** serialized bytes match spec and field extraction is deterministic.
+
+### 75) `bounded-io-slice`
+**Focus:** safe slicing for parser boundaries.
+- Build helpers that return subslices with overflow-safe index math.
+- Reject out-of-range windows with structured errors.
+
+**Done when:** fuzz-like edge cases (`start+len` overflow, short buffers) are covered.
+
+### 76) `atomic-progress-counter`
+**Focus:** lock-free counters with explicit memory ordering.
+- Increment a shared counter from multiple workers.
+- Compare relaxed vs stronger ordering choices.
+
+**Done when:** correctness tests pass and ordering rationale is explained.
+
+### 77) `resource-guard-drop`
+**Focus:** RAII for deterministic cleanup.
+- Model a guard that toggles or closes a resource in `Drop`.
+- Ensure cleanup happens on early returns and panic paths.
+
+**Done when:** tests prove cleanup without manual close calls.
+
+### 78) `polling-state-machine`
+**Focus:** event-loop style state transitions.
+- Implement a minimal poll state machine (`Idle/Readable/Writable/Closed`).
+- Reject impossible event transitions.
+
+**Done when:** transition table is explicit and invalid paths return meaningful errors.
+
+### 79) `bounded-queue`
+**Focus:** backpressure-aware queue APIs.
+- Build a bounded queue push API that fails when full.
+- Define behavior for capacity 0 and consumer lag.
+
+**Done when:** producer behavior under pressure is deterministic and test-covered.
+
+### 80) `arena-indices`
+**Focus:** index-based ownership instead of references.
+- Store values in an arena and return stable numeric handles.
+- Avoid borrow checker contention in graph-like data.
+
+**Done when:** insert/get semantics are O(1) and invalid handles are safe.
+
+### 81) `bitmask-permissions`
+**Focus:** compact capability representation.
+- Represent read/write/execute permissions with bitflags.
+- Provide helper APIs for checking combined permissions.
+
+**Done when:** permission checks are branch-light and easy to compose.
+
+### 82) `rolling-checksum`
+**Focus:** cheap integrity checks.
+- Implement a small checksum primitive for byte streams.
+- Discuss tradeoffs vs stronger cryptographic hashes.
+
+**Done when:** incremental updates and known-vector tests pass.
+
+### 83) `free-list-reuse`
+**Focus:** slot reuse and stable IDs.
+- Build a tiny slot map/free-list style container.
+- Reuse freed slots to avoid unbounded growth.
+
+**Done when:** remove/insert cycles reuse indices predictably.
+
+### 84) `zero-copy-field-parse`
+**Focus:** borrowing from byte buffers.
+- Parse headers/payloads into borrowed subslices.
+- Avoid allocating intermediate `Vec`/`String` values.
+
+**Done when:** API lifetimes prevent use-after-free and allocations are minimized.
+
+### 85) `io-error-mapping`
+**Focus:** translating OS/I/O failures to domain errors.
+- Map `std::io::ErrorKind` into your own error taxonomy.
+- Preserve meaningful distinctions for callers.
+
+**Done when:** retryable vs terminal failures are distinguishable.
+
+### 86) `alignment-check`
+**Focus:** pointer alignment and low-level safety assumptions.
+- Write helpers that validate alignment requirements for typed access.
+- Document why misalignment is dangerous.
+
+**Done when:** aligned/misaligned test cases are explicit and easy to reason about.
+
+### 87) `stack-vs-heap-buffer`
+**Focus:** buffer placement tradeoffs.
+- Compare fixed-size stack scratch space with heap allocation fallback.
+- Benchmark for small/large sizes.
+
+**Done when:** threshold choice is justified with measured data.
+
+### 88) `cooperative-tick-scheduler`
+**Focus:** deterministic task scheduling basics.
+- Implement round-robin tick distribution over task counters.
+- Keep scheduler state explicit and serializable.
+
+**Done when:** fairness and edge cases (`0 tasks`, `0 ticks`) are test-covered.
+
+### 89) `length-prefixed-protocol`
+**Focus:** robust framing for binary protocols.
+- Encode payloads with explicit length prefix.
+- Validate frame size before exposing payload slices.
+
+**Done when:** malformed and truncated frames produce clear errors.
+
+### 90) `bump-allocator-drill`
+**Focus:** monotonic allocation patterns.
+- Implement a tiny bump allocator over a preallocated byte buffer.
+- Return mutable slices for each allocation request.
+
+**Done when:** overflow/capacity paths are safe and allocation order is deterministic.
+
 ## Starter + reference code in this repo
 
 - `src/exercises.rs` provides starter APIs for exercises 1–30 and 41–71 in this document.
+- `28_systems_programming/` provides separate file-based drills for exercises 72–90 so each systems topic stays small and focused.
 - `24_advanced_patterns/` provides an additional 10 file-based drills (31–40).
 - `src/references.rs` provides compact, working references for selected exercises (transpose, typestate builder, units).
 
