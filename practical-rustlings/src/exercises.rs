@@ -757,3 +757,279 @@ pub fn cli_sum(args: &[String]) -> Result<i64, SimError> {
     let b = second.parse::<i64>().map_err(|_| SimError::Parse)?;
     a.checked_add(b).ok_or(SimError::Overflow)
 }
+
+// 72) ring-buffer-bytes
+#[derive(Debug, Clone)]
+pub struct ByteRing {
+    buf: Vec<u8>,
+    head: usize,
+    tail: usize,
+    len: usize,
+}
+
+impl ByteRing {
+    pub fn with_capacity(capacity: usize) -> Self {
+        Self {
+            buf: vec![0; capacity.max(1)],
+            head: 0,
+            tail: 0,
+            len: 0,
+        }
+    }
+
+    pub fn push(&mut self, byte: u8) -> Result<(), SimError> {
+        if self.len == self.buf.len() {
+            return Err(SimError::OutOfBounds);
+        }
+        self.buf[self.tail] = byte;
+        self.tail = (self.tail + 1) % self.buf.len();
+        self.len += 1;
+        Ok(())
+    }
+
+    pub fn pop(&mut self) -> Option<u8> {
+        if self.len == 0 {
+            return None;
+        }
+        let byte = self.buf[self.head];
+        self.head = (self.head + 1) % self.buf.len();
+        self.len -= 1;
+        Some(byte)
+    }
+}
+
+// 73) endian-encoding
+pub fn encode_u32_le(value: u32) -> [u8; 4] {
+    value.to_le_bytes()
+}
+
+pub fn decode_u32_le(bytes: [u8; 4]) -> u32 {
+    u32::from_le_bytes(bytes)
+}
+
+// 74) packed-header-layout
+#[repr(C)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct PacketHeader {
+    pub magic: u16,
+    pub version: u8,
+    pub flags: u8,
+    pub payload_len: u32,
+}
+
+impl PacketHeader {
+    pub fn to_bytes(self) -> [u8; 8] {
+        let mut out = [0_u8; 8];
+        out[0..2].copy_from_slice(&self.magic.to_le_bytes());
+        out[2] = self.version;
+        out[3] = self.flags;
+        out[4..8].copy_from_slice(&self.payload_len.to_le_bytes());
+        out
+    }
+}
+
+// 75) bounded-io-slice
+pub fn bounded_window<'a>(buf: &'a [u8], start: usize, len: usize) -> Result<&'a [u8], SimError> {
+    let end = start.checked_add(len).ok_or(SimError::Overflow)?;
+    buf.get(start..end).ok_or(SimError::OutOfBounds)
+}
+
+// 76) atomic-progress-counter
+pub fn bump_atomic(counter: &std::sync::atomic::AtomicUsize, n: usize) {
+    use std::sync::atomic::Ordering;
+    counter.fetch_add(n, Ordering::Relaxed);
+}
+
+// 77) resource-guard-drop
+#[derive(Debug)]
+pub struct ResourceGuard<'a> {
+    closed: &'a std::sync::atomic::AtomicBool,
+}
+
+impl<'a> ResourceGuard<'a> {
+    pub fn new(closed: &'a std::sync::atomic::AtomicBool) -> Self {
+        Self { closed }
+    }
+}
+
+impl Drop for ResourceGuard<'_> {
+    fn drop(&mut self) {
+        use std::sync::atomic::Ordering;
+        self.closed.store(true, Ordering::SeqCst);
+    }
+}
+
+// 78) polling-state-machine
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PollState {
+    Idle,
+    Readable,
+    Writable,
+    Closed,
+}
+
+pub fn advance_poll_state(state: PollState, event: &str) -> Result<PollState, SimError> {
+    use PollState::*;
+    match (state, event) {
+        (Idle, "read") => Ok(Readable),
+        (Idle, "write") => Ok(Writable),
+        (Readable, "drain") => Ok(Idle),
+        (Writable, "flush") => Ok(Idle),
+        (_, "close") => Ok(Closed),
+        _ => Err(SimError::InvalidTransition),
+    }
+}
+
+// 79) bounded-queue
+pub fn enqueue_bounded(queue: &mut std::collections::VecDeque<i64>, cap: usize, value: i64) -> Result<(), SimError> {
+    if queue.len() >= cap {
+        return Err(SimError::OutOfBounds);
+    }
+    queue.push_back(value);
+    Ok(())
+}
+
+// 80) arena-indices
+#[derive(Debug, Default)]
+pub struct Arena<T> {
+    items: Vec<T>,
+}
+
+impl<T> Arena<T> {
+    pub fn insert(&mut self, value: T) -> usize {
+        self.items.push(value);
+        self.items.len() - 1
+    }
+
+    pub fn get(&self, idx: usize) -> Option<&T> {
+        self.items.get(idx)
+    }
+}
+
+// 81) bitmask-permissions
+pub const PERM_READ: u8 = 0b001;
+pub const PERM_WRITE: u8 = 0b010;
+pub const PERM_EXEC: u8 = 0b100;
+
+pub fn has_perm(mask: u8, perm: u8) -> bool {
+    mask & perm == perm
+}
+
+// 82) rolling-checksum
+pub fn xor_checksum(bytes: &[u8]) -> u8 {
+    bytes.iter().fold(0_u8, |acc, b| acc ^ b)
+}
+
+// 83) free-list-reuse
+#[derive(Debug, Default)]
+pub struct SlotMap<T> {
+    slots: Vec<Option<T>>,
+}
+
+impl<T> SlotMap<T> {
+    pub fn insert(&mut self, value: T) -> usize {
+        if let Some((idx, slot)) = self.slots.iter_mut().enumerate().find(|(_, s)| s.is_none()) {
+            *slot = Some(value);
+            idx
+        } else {
+            self.slots.push(Some(value));
+            self.slots.len() - 1
+        }
+    }
+
+    pub fn remove(&mut self, idx: usize) -> Option<T> {
+        self.slots.get_mut(idx)?.take()
+    }
+}
+
+// 84) zero-copy-field-parse
+pub fn parse_frame<'a>(frame: &'a [u8]) -> Result<(&'a [u8], &'a [u8]), SimError> {
+    if frame.len() < 2 {
+        return Err(SimError::Parse);
+    }
+    let header_len = frame[0] as usize;
+    let payload_len = frame[1] as usize;
+    if frame.len() < 2 + header_len + payload_len {
+        return Err(SimError::OutOfBounds);
+    }
+    let header = &frame[2..2 + header_len];
+    let payload = &frame[2 + header_len..2 + header_len + payload_len];
+    Ok((header, payload))
+}
+
+// 85) io-error-mapping
+pub fn map_io_error_kind(kind: std::io::ErrorKind) -> SimError {
+    match kind {
+        std::io::ErrorKind::TimedOut => SimError::Timeout,
+        std::io::ErrorKind::InvalidData => SimError::Parse,
+        std::io::ErrorKind::NotFound => SimError::MissingField,
+        _ => SimError::Parse,
+    }
+}
+
+// 86) alignment-check
+pub fn is_aligned_for<T>(ptr: *const u8) -> bool {
+    (ptr as usize).is_multiple_of(std::mem::align_of::<T>())
+}
+
+// 87) stack-vs-heap-buffer
+pub fn scratch_buffer(size: usize) -> Vec<u8> {
+    vec![0_u8; size]
+}
+
+// 88) cooperative-tick-scheduler
+pub fn run_round_robin(tasks: &mut [usize], ticks: usize) {
+    if tasks.is_empty() {
+        return;
+    }
+    for turn in 0..ticks {
+        let idx = turn % tasks.len();
+        tasks[idx] += 1;
+    }
+}
+
+// 89) length-prefixed-protocol
+pub fn encode_len_prefixed(payload: &[u8]) -> Result<Vec<u8>, SimError> {
+    let len = u16::try_from(payload.len()).map_err(|_| SimError::Overflow)?;
+    let mut out = Vec::with_capacity(2 + payload.len());
+    out.extend_from_slice(&len.to_le_bytes());
+    out.extend_from_slice(payload);
+    Ok(out)
+}
+
+pub fn decode_len_prefixed(frame: &[u8]) -> Result<&[u8], SimError> {
+    if frame.len() < 2 {
+        return Err(SimError::Parse);
+    }
+    let len = u16::from_le_bytes([frame[0], frame[1]]) as usize;
+    if frame.len() != 2 + len {
+        return Err(SimError::OutOfBounds);
+    }
+    Ok(&frame[2..])
+}
+
+// 90) bump-allocator-drill
+#[derive(Debug)]
+pub struct Bump {
+    buf: Vec<u8>,
+    next: usize,
+}
+
+impl Bump {
+    pub fn new(capacity: usize) -> Self {
+        Self {
+            buf: vec![0_u8; capacity],
+            next: 0,
+        }
+    }
+
+    pub fn alloc(&mut self, bytes: usize) -> Result<&mut [u8], SimError> {
+        let end = self.next.checked_add(bytes).ok_or(SimError::Overflow)?;
+        if end > self.buf.len() {
+            return Err(SimError::OutOfBounds);
+        }
+        let start = self.next;
+        self.next = end;
+        Ok(&mut self.buf[start..end])
+    }
+}
