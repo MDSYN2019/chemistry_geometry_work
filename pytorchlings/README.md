@@ -22,6 +22,7 @@ A rustlings-style practice track for **PyTorch** and **PyTorch Geometric (PyG)**
 - Complete 38-47 for comprehensive PyTorch engineering workflows (losses, hooks, initialization, accumulation, AMP, compile, TorchScript, packed sequences).
 - Continue 48-59 for advanced graph architecture coverage (GCN, GAT, GraphSAGE, GIN, spectral, pooling, hyperbolic, dynamic, R-GCN, graph transformer, graph autoencoder, diffusion).
 - Add 60-61 for Optuna-based hyperparameter optimization (PyTorch MLP + scikit-learn baseline tuning).
+- Add 62-65 for chemistry-oriented generative modeling, hill-climbing evals, and slice-based scientific error analysis.
 
 ## Quick check command
 
@@ -78,3 +79,12 @@ Exercises 60-61 introduce Optuna workflows so learners can practice search-space
 - Intermediate metric reporting + pruning hooks
 - TPE and random samplers with fixed seeds
 - Non-neural baseline tuning with scikit-learn cross-validation
+## Chemistry + materials interview-focused extension
+
+Exercises 62-65 target role-relevant fundamentals for generative science workflows:
+
+- Masked-token transformer pretraining on toy chemistry strings
+- Property-conditioned sequence generation
+- Hill-climb eval loops for iterative model improvement
+- Slice-wise scientific error analysis + markdown reporting for collaboration
+
