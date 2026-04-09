@@ -677,7 +677,8 @@ These exercises are grouped by the skill gaps identified in your assessment.
 
 ## Starter + reference code in this repo
 
-- `src/exercises.rs` provides starter APIs for exercises 1–30 and 41–90 in this document.
+- `src/exercises.rs` provides starter APIs for exercises 1–30 and 41–71 in this document.
+- `28_systems_programming/` provides separate file-based drills for exercises 72–90 so each systems topic stays small and focused.
 - `24_advanced_patterns/` provides an additional 10 file-based drills (31–40).
 - `src/references.rs` provides compact, working references for selected exercises (transpose, typestate builder, units).
 
