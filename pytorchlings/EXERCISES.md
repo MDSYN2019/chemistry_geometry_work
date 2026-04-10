@@ -71,3 +71,12 @@
 | 63 | PyTorch | Property-conditioned sequence generation (GRU) | `exercises/63_conditional_generation/property_conditioned_generation.py` | `solutions/63_property_conditioned_generation.py` |
 | 64 | PyTorch | Hill-climb eval loop for scientific MAE optimization | `exercises/64_hillclimb_evals/experiment_hillclimb.py` | `solutions/64_eval_hillclimb.py` |
 | 65 | PyTorch | Slice-based scientific error analysis + reporting | `exercises/65_science_error_analysis/scientific_error_analysis.py` | `solutions/65_scientific_error_analysis.py` |
+
+| 66 | PyTorch | Math-for-ML drills (projections, Jacobians, NLL) | `exercises/66_math_for_ml/matrix_calculus_drills.py` | `N/A (exercise scaffold)` |
+| 67 | PyTorch | Paper-baseline implementation from scratch | `exercises/67_pytorch_paper_baseline/paper_baseline_training.py` | `N/A (exercise scaffold)` |
+| 68 | PyTorch | Accelerator-native mindset (`compile`, `vmap`, functional params) | `exercises/68_accelerator_native_thinking/jit_vmap_pytree_mindset.py` | `N/A (exercise scaffold)` |
+| 69 | PyTorch + RDKit + PyG | Molecule preprocessing pipeline from SMILES | `exercises/69_rdkit_pyg_pipeline/rdkit_to_pyg_dataset.py` | `N/A (exercise scaffold)` |
+| 70 | PyG | GCN/GIN/GAT comparison scaffold | `exercises/70_gnn_model_comparison/gcn_gin_gat_benchmark.py` | `N/A (exercise scaffold)` |
+| 71 | PyTorch | Protein-ligand graph-only vs geometry-aware comparison | `exercises/71_protein_ligand_geometry/protein_ligand_graph_vs_geometry.py` | `N/A (exercise scaffold)` |
+| 72 | PyTorch | Reproducible training framework scaffold | `exercises/72_research_framework/reproducible_training_stack.py` | `N/A (exercise scaffold)` |
+| 73 | PyTorch | Ablation + failure-analysis report workflow | `exercises/73_ablation_failure_analysis/ablation_and_failure_report.py` | `N/A (exercise scaffold)` |
