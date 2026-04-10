@@ -93,3 +93,16 @@ Candidate should address:
 - Collaboration and communication
 
 A strong overall signal is typically 3+ in most categories with at least one area of clear excellence.
+
+## Implemented Python exercises (PyTorch)
+
+Concrete exercise scripts are available at:
+
+- `src/pytorch_practice/interview_exercises/ex1_sequence_binary_classifier.py`
+- `src/pytorch_practice/interview_exercises/ex2_distributed_training_stub.py`
+- `src/pytorch_practice/interview_exercises/ex3_profile_and_optimize.py`
+- `src/pytorch_practice/interview_exercises/ex4_bioai_multitask_stub.py`
+- `src/pytorch_practice/interview_exercises/README.md`
+
+These are executable Python stubs that can be used directly in take-home or live interview settings.
+
