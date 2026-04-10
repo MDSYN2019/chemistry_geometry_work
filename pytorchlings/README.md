@@ -23,6 +23,7 @@ A rustlings-style practice track for **PyTorch** and **PyTorch Geometric (PyG)**
 - Continue 48-59 for advanced graph architecture coverage (GCN, GAT, GraphSAGE, GIN, spectral, pooling, hyperbolic, dynamic, R-GCN, graph transformer, graph autoencoder, diffusion).
 - Add 60-61 for Optuna-based hyperparameter optimization (PyTorch MLP + scikit-learn baseline tuning).
 - Add 62-65 for chemistry-oriented generative modeling, hill-climbing evals, and slice-based scientific error analysis.
+- Add 66-73 for interview-focused research practice: math refresh drills, from-scratch baselines, accelerator-native patterns, RDKit/PyG pipelines, graph-vs-geometry modeling, reproducible training stacks, and ablation reporting.
 
 ## Quick check command
 
