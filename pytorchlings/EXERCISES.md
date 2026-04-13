@@ -80,3 +80,9 @@
 | 71 | PyTorch | Protein-ligand graph-only vs geometry-aware comparison | `exercises/71_protein_ligand_geometry/protein_ligand_graph_vs_geometry.py` | `N/A (exercise scaffold)` |
 | 72 | PyTorch | Reproducible training framework scaffold | `exercises/72_research_framework/reproducible_training_stack.py` | `N/A (exercise scaffold)` |
 | 73 | PyTorch | Ablation + failure-analysis report workflow | `exercises/73_ablation_failure_analysis/ablation_and_failure_report.py` | `N/A (exercise scaffold)` |
+| 74 | PyTorch | Fingerprint QSAR MLP baseline scaffold | `exercises/74_fingerprint_qsar_mlp/fingerprint_qsar_mlp.py` | `N/A (exercise scaffold)` |
+| 75 | PyTorch | Multitask QSAR with masked missing labels | `exercises/75_multitask_qsar_masked/multitask_qsar_masked.py` | `N/A (exercise scaffold)` |
+| 76 | PyTorch | Molecular graph message passing (from scratch) | `exercises/76_molecular_graph_message_passing/molecular_graph_message_passing.py` | `N/A (exercise scaffold)` |
+| 77 | PyTorch | SMILES LSTM property prediction scaffold | `exercises/77_smiles_lstm_property/smiles_lstm_property.py` | `N/A (exercise scaffold)` |
+| 78 | PyTorch | Protein-ligand 3D CNN scoring scaffold | `exercises/78_protein_ligand_3dcnn/protein_ligand_3dcnn.py` | `N/A (exercise scaffold)` |
+
