@@ -20,6 +20,10 @@ This folder contains practical Python exercises designed for research-engineerin
    - Implement a multi-head model for target affinity, developability, and toxicity proxy tasks.
    - Focus: multi-task learning design and BioAI framing.
 
+5. `chemistry_nn_exercises.md`
+   - Progressive chemistry-focused PyTorch exercises: fingerprints -> multitask -> GNN -> SMILES LSTM -> 3D CNN.
+   - Focus: realistic dataset choices, project sequencing, and deliverables.
+
 ## Suggested usage
 
 - Ask candidates to complete 1-2 scripts as take-home work.

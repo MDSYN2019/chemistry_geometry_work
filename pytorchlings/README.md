@@ -24,6 +24,7 @@ A rustlings-style practice track for **PyTorch** and **PyTorch Geometric (PyG)**
 - Add 60-61 for Optuna-based hyperparameter optimization (PyTorch MLP + scikit-learn baseline tuning).
 - Add 62-65 for chemistry-oriented generative modeling, hill-climbing evals, and slice-based scientific error analysis.
 - Add 66-73 for interview-focused research practice: math refresh drills, from-scratch baselines, accelerator-native patterns, RDKit/PyG pipelines, graph-vs-geometry modeling, reproducible training stacks, and ablation reporting.
+- Add 74-78 for chemistry-model progression examples: fingerprint MLP baseline, multitask masking, molecular message passing, SMILES LSTM, and protein-ligand 3D CNN.
 
 ## Quick check command
 
@@ -89,3 +90,14 @@ Exercises 62-65 target role-relevant fundamentals for generative science workflo
 - Hill-climb eval loops for iterative model improvement
 - Slice-wise scientific error analysis + markdown reporting for collaboration
 
+
+
+## Chemistry architecture progression extension
+
+Exercises 74-78 provide direct hands-on scaffolds matching a practical chemistry deep-learning progression:
+
+- Fingerprint/descriptors -> feed-forward QSAR baseline
+- Multitask DNN with explicit missing-label masking
+- Molecular graph message passing and graph-level readout
+- SMILES LSTM sequence modeling
+- 3D CNN scoring on voxelized protein-ligand neighborhoods
