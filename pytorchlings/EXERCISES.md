@@ -85,4 +85,9 @@
 | 76 | PyTorch | Molecular graph message passing (from scratch) | `exercises/76_molecular_graph_message_passing/molecular_graph_message_passing.py` | `N/A (exercise scaffold)` |
 | 77 | PyTorch | SMILES LSTM property prediction scaffold | `exercises/77_smiles_lstm_property/smiles_lstm_property.py` | `N/A (exercise scaffold)` |
 | 78 | PyTorch | Protein-ligand 3D CNN scoring scaffold | `exercises/78_protein_ligand_3dcnn/protein_ligand_3dcnn.py` | `N/A (exercise scaffold)` |
-
+| 79 | PyG + NetworkX | Overlap heuristics for link prediction baselines | `exercises/79_overlap_link_heuristics/overlap_link_heuristics.py` | `N/A (exercise scaffold)` |
+| 80 | PyG + Spectral | Laplacian embeddings + spectral clustering | `exercises/80_laplacian_spectral_clustering/laplacian_spectral_clustering.py` | `N/A (exercise scaffold)` |
+| 81 | Theory + PyG | Weisfeiler-Lehman expressiveness lab | `exercises/81_wl_expressiveness_lab/wl_expressiveness_lab.py` | `N/A (exercise scaffold)` |
+| 82 | PyG | Neighbor sampling and efficiency comparison | `exercises/82_neighbor_sampling_efficiency/neighbor_sampling_efficiency.py` | `N/A (exercise scaffold)` |
+| 83 | PyG + SSL | Self-supervised graph pretraining scaffold | `exercises/83_self_supervised_graph_pretraining/self_supervised_graph_pretraining.py` | `N/A (exercise scaffold)` |
+| 84 | PyG | Variational graph autoencoder (VGAE) scaffold | `exercises/84_vgae_molecular_generation/vgae_molecular_generation.py` | `N/A (exercise scaffold)` |
