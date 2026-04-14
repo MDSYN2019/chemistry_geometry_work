@@ -85,4 +85,8 @@
 | 76 | PyTorch | Molecular graph message passing (from scratch) | `exercises/76_molecular_graph_message_passing/molecular_graph_message_passing.py` | `N/A (exercise scaffold)` |
 | 77 | PyTorch | SMILES LSTM property prediction scaffold | `exercises/77_smiles_lstm_property/smiles_lstm_property.py` | `N/A (exercise scaffold)` |
 | 78 | PyTorch | Protein-ligand 3D CNN scoring scaffold | `exercises/78_protein_ligand_3dcnn/protein_ligand_3dcnn.py` | `N/A (exercise scaffold)` |
+| 79 | PyTorch | Hybrid fingerprint+graph fusion architecture | `exercises/79_hybrid_fusion_architecture/hybrid_fingerprint_graph_fusion.py` | `solutions/79_hybrid_fingerprint_graph_fusion.py` |
+| 80 | PyTorch | Residual gated MPNN stack | `exercises/80_residual_mpnn_stack/residual_gated_mpnn.py` | `solutions/80_residual_gated_mpnn.py` |
+| 81 | PyTorch | Ligand-protein cross-attention fusion | `exercises/81_cross_attention_fusion/ligand_protein_cross_attention.py` | `solutions/81_ligand_protein_cross_attention.py` |
+| 82 | PyTorch | Multimodal property model with uncertainty head | `exercises/82_multimodal_uncertainty_head/multimodal_property_with_uncertainty.py` | `solutions/82_multimodal_property_with_uncertainty.py` |
 

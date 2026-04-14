@@ -25,6 +25,7 @@ A rustlings-style practice track for **PyTorch** and **PyTorch Geometric (PyG)**
 - Add 62-65 for chemistry-oriented generative modeling, hill-climbing evals, and slice-based scientific error analysis.
 - Add 66-73 for interview-focused research practice: math refresh drills, from-scratch baselines, accelerator-native patterns, RDKit/PyG pipelines, graph-vs-geometry modeling, reproducible training stacks, and ablation reporting.
 - Add 74-78 for chemistry-model progression examples: fingerprint MLP baseline, multitask masking, molecular message passing, SMILES LSTM, and protein-ligand 3D CNN.
+- Continue 79-82 to reuse earlier building blocks in progressively more complex architectures: hybrid fusion, residual MPNNs, cross-attention fusion, and multimodal uncertainty modeling.
 
 ## Quick check command
 
@@ -101,3 +102,13 @@ Exercises 74-78 provide direct hands-on scaffolds matching a practical chemistry
 - Molecular graph message passing and graph-level readout
 - SMILES LSTM sequence modeling
 - 3D CNN scoring on voxelized protein-ligand neighborhoods
+
+
+## Progressive architecture build-up extension
+
+Exercises 79-82 are intentionally cumulative: each task reuses ideas from earlier exercises and composes them into larger systems.
+
+- 79: combine fingerprint and graph encoders into a single fusion predictor
+- 80: deepen graph models with residual/gated message-passing blocks
+- 81: introduce ligand-protein cross-attention for conditional representation learning
+- 82: merge fingerprint, graph, and sequence streams into a multimodal uncertainty-aware model
