@@ -26,6 +26,7 @@ A rustlings-style practice track for **PyTorch** and **PyTorch Geometric (PyG)**
 - Add 66-73 for interview-focused research practice: math refresh drills, from-scratch baselines, accelerator-native patterns, RDKit/PyG pipelines, graph-vs-geometry modeling, reproducible training stacks, and ablation reporting.
 - Add 74-78 for chemistry-model progression examples: fingerprint MLP baseline, multitask masking, molecular message passing, SMILES LSTM, and protein-ligand 3D CNN.
 - Continue 79-82 to reuse earlier building blocks in progressively more complex architectures: hybrid fusion, residual MPNNs, cross-attention fusion, and multimodal uncertainty modeling.
+- Extend 83-86 for deeper architectural composition in the pytorchlings folder: residual MLP backbones, CNN-transformer hybrids, graph-sequence co-encoders, and multimodal MoE routing.
 
 ## Quick check command
 
@@ -112,3 +113,13 @@ Exercises 79-82 are intentionally cumulative: each task reuses ideas from earlie
 - 80: deepen graph models with residual/gated message-passing blocks
 - 81: introduce ligand-protein cross-attention for conditional representation learning
 - 82: merge fingerprint, graph, and sequence streams into a multimodal uncertainty-aware model
+
+
+## Advanced composition extension (pytorchlings folder)
+
+Exercises 83-86 continue the same cumulative pattern and explicitly push learners to compose earlier templates into larger architectures:
+
+- 83: residual MLP backbone design for stable depth scaling
+- 84: CNN feature extraction fused with transformer token mixing
+- 85: graph-sequence co-encoding with bidirectional cross-attention
+- 86: multimodal Mixture-of-Experts routing for specialization
