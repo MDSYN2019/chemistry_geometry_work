@@ -101,3 +101,5 @@
 | 84 | PyTorch | CNN-Transformer hybrid encoder | `exercises/84_cnn_transformer_hybrid/cnn_transformer_hybrid.py` | `solutions/84_cnn_transformer_hybrid.py` |
 | 85 | PyTorch | Graph-sequence co-encoder with bidirectional cross-attention | `exercises/85_graph_sequence_coencoder/graph_sequence_coencoder.py` | `solutions/85_graph_sequence_coencoder.py` |
 | 86 | PyTorch | Mixture-of-Experts multimodal router | `exercises/86_moe_multimodal_router/moe_multimodal_router.py` | `solutions/86_moe_multimodal_router.py` |
+| 87 | Lightning | Callback stack (EarlyStopping, checkpointing, LR monitor) | `exercises/87_lightning_callbacks/callbacks_and_early_stopping.py` | `solutions/87_callbacks_and_early_stopping.py` |
+| 88 | PyTorch | Scaled dot-product attention from scratch + causal masking | `exercises/88_attention_mechanics/scaled_dot_product_attention.py` | `solutions/88_scaled_dot_product_attention.py` |
