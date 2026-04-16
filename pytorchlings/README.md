@@ -28,6 +28,7 @@ A rustlings-style practice track for **PyTorch** and **PyTorch Geometric (PyG)**
 - Add 79-84 for graph-learning roadmap extensions: overlap link heuristics, spectral clustering, WL expressiveness, sampling efficiency, self-supervised pretraining, and VGAE generation.
 - Continue 79-82 to reuse earlier building blocks in progressively more complex architectures: hybrid fusion, residual MPNNs, cross-attention fusion, and multimodal uncertainty modeling.
 - Extend 83-86 for deeper architectural composition in the pytorchlings folder: residual MLP backbones, CNN-transformer hybrids, graph-sequence co-encoders, and multimodal MoE routing.
+- Extend 87-88 for practical Lightning callback orchestration and first-principles attention mechanics.
 
 ## Quick check command
 
@@ -134,3 +135,11 @@ Exercises 83-86 continue the same cumulative pattern and explicitly push learner
 - 84: CNN feature extraction fused with transformer token mixing
 - 85: graph-sequence co-encoding with bidirectional cross-attention
 - 86: multimodal Mixture-of-Experts routing for specialization
+
+## Additional numerical exercises extension
+
+Exercises 87-88 add focused numerical drills requested for Lightning and attention understanding:
+
+- 87: configure a production-relevant Lightning callback stack (EarlyStopping, checkpointing, LR monitoring)
+- 88: implement scaled dot-product attention and causal masking from scratch to build attention intuition
+
