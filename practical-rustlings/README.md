@@ -29,3 +29,4 @@
 | collections_drills      | n/a                 |
 | algorithmic_patterns    | n/a                 |
 | tokio                  | n/a                 |
+| ffi_numerical          | n/a                 |

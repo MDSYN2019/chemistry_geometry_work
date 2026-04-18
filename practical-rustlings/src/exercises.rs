@@ -13,6 +13,7 @@ pub enum SimError {
     BorrowConflict,
     Timeout,
     NullPtr,
+    NonFinite,
 }
 
 // 1) ok-or-not-ok
@@ -756,4 +757,105 @@ pub fn cli_sum(args: &[String]) -> Result<i64, SimError> {
     let a = first.parse::<i64>().map_err(|_| SimError::Parse)?;
     let b = second.parse::<i64>().map_err(|_| SimError::Parse)?;
     a.checked_add(b).ok_or(SimError::Overflow)
+}
+
+
+// 91) ffi-scalar-call
+pub type ScalarCallback = extern "C" fn(f64) -> f64;
+
+pub fn ffi_call_scalar(cb: Option<ScalarCallback>, x: f64) -> Result<f64, SimError> {
+    let f = cb.ok_or(SimError::NullPtr)?;
+    Ok(f(x))
+}
+
+// 92) ffi-array-sum
+pub fn ffi_sum(ptr: *const f64, len: usize) -> Result<f64, SimError> {
+    if len == 0 {
+        return Ok(0.0);
+    }
+    if ptr.is_null() {
+        return Err(SimError::NullPtr);
+    }
+    // SAFETY: pointer is non-null and caller provides at least len readable elements.
+    let values = unsafe { std::slice::from_raw_parts(ptr, len) };
+    Ok(values.iter().copied().sum())
+}
+
+// 93) ffi-owned-buffer
+#[repr(C)]
+#[derive(Debug, Clone, Copy)]
+pub struct FfiBuffer {
+    pub ptr: *mut f64,
+    pub len: usize,
+}
+
+pub fn ffi_leak_buffer(mut data: Vec<f64>) -> FfiBuffer {
+    let out = FfiBuffer {
+        ptr: data.as_mut_ptr(),
+        len: data.len(),
+    };
+    std::mem::forget(data);
+    out
+}
+
+pub unsafe fn ffi_free_buffer(buffer: FfiBuffer) {
+    if buffer.ptr.is_null() || buffer.len == 0 {
+        return;
+    }
+    // SAFETY: pointer/len pair comes from ffi_leak_buffer and is freed exactly once.
+    unsafe { drop(Vec::from_raw_parts(buffer.ptr, buffer.len, buffer.len)) };
+}
+
+// 94) ffi-opaque-context
+#[derive(Debug)]
+pub struct OpaqueIntegrator {
+    pub dt: f64,
+    pub t: f64,
+}
+
+pub fn ffi_context_new(dt: f64) -> *mut OpaqueIntegrator {
+    Box::into_raw(Box::new(OpaqueIntegrator { dt, t: 0.0 }))
+}
+
+pub unsafe fn ffi_context_tick(ctx: *mut OpaqueIntegrator, steps: usize) -> Result<f64, SimError> {
+    if ctx.is_null() {
+        return Err(SimError::NullPtr);
+    }
+    // SAFETY: caller guarantees exclusive mutable access to a valid context pointer.
+    let ctx = unsafe { &mut *ctx };
+    ctx.t += ctx.dt * steps as f64;
+    Ok(ctx.t)
+}
+
+pub unsafe fn ffi_context_free(ctx: *mut OpaqueIntegrator) {
+    if ctx.is_null() {
+        return;
+    }
+    // SAFETY: pointer came from ffi_context_new and is dropped exactly once.
+    unsafe { drop(Box::from_raw(ctx)) };
+}
+
+// 95) ffi-safe-norm
+pub fn ffi_l2_norm_checked(ptr: *const f64, len: usize) -> Result<f64, SimError> {
+    if len == 0 {
+        return Ok(0.0);
+    }
+    if ptr.is_null() {
+        return Err(SimError::NullPtr);
+    }
+
+    // SAFETY: pointer is non-null and caller guarantees len readable values.
+    let values = unsafe { std::slice::from_raw_parts(ptr, len) };
+    let mut sum = 0.0;
+    for &x in values {
+        let term = x * x;
+        if !term.is_finite() {
+            return Err(SimError::NonFinite);
+        }
+        sum += term;
+        if !sum.is_finite() {
+            return Err(SimError::NonFinite);
+        }
+    }
+    Ok(sum.sqrt())
 }

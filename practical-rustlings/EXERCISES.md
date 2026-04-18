@@ -1,4 +1,4 @@
-# Practical Rustlings Exercises (90)
+# Practical Rustlings Exercises (95)
 
 These exercises are grouped by the skill gaps identified in your assessment.
 
@@ -705,3 +705,46 @@ Score each exercise 1–5 on:
 5. Scientific correctness guarantees
 
 Track the trend weekly. Improvement in consistency is more important than speed.
+
+## Track O — FFI + Numerical Safety (`29_ffi_numerical`)
+
+### 91) `ffi-scalar-call`
+**Focus:** first safe wrapper around a C-ABI callback.
+- Accept an optional `extern "C" fn(f64) -> f64` callback.
+- Return a clear error when callback is missing.
+- Keep call path tiny and test-driven.
+
+**Done when:** callback and missing-callback branches are both covered in tests.
+
+### 92) `ffi-array-sum`
+**Focus:** pointer + length validation for numeric slices.
+- Handle `(null, 0)` as empty input.
+- Reject `(null, len>0)` and explain why.
+- Convert to slice and sum without allocation.
+
+**Done when:** null/zero/normal cases are fully test-covered.
+
+### 93) `ffi-owned-buffer`
+**Focus:** ownership transfer over FFI boundaries.
+- Export a `#[repr(C)]` `{ptr, len}` buffer descriptor.
+- Leak a `Vec<f64>` intentionally when handing pointer to foreign code.
+- Reclaim exactly once in a matching free function.
+
+**Done when:** ownership rules are documented and tests demonstrate round-trip + free.
+
+### 94) `ffi-opaque-context`
+**Focus:** lifecycle for opaque state pointers.
+- Create context with `Box::into_raw`.
+- Mutate/read state through checked APIs.
+- Destroy with `Box::from_raw` exactly once.
+
+**Done when:** create/use/free lifecycle is tested and null inputs are handled.
+
+### 95) `ffi-safe-norm`
+**Focus:** numerically defensive computation at the boundary.
+- Compute L2 norm from pointer data.
+- Detect and reject non-finite values (`NaN`, `inf`).
+- Keep all safety checks before and during accumulation.
+
+**Done when:** valid vectors succeed and non-finite / null cases fail clearly.
+
