@@ -16,6 +16,7 @@ This repository is now a **multi-language learning workspace** rather than a sin
 - `src/data/` — data files used by scripts
 - `cxx/` — legacy C++ geometry code
 - `jaxlings/` — rustlings-style JAX exercises and solutions
+- `algolings/` — rustlings-style algorithms exercises from simple to complex
 
 ## Build / run notes
 
