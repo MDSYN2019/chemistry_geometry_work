@@ -29,6 +29,7 @@ A rustlings-style practice track for **PyTorch** and **PyTorch Geometric (PyG)**
 - Continue 79-82 to reuse earlier building blocks in progressively more complex architectures: hybrid fusion, residual MPNNs, cross-attention fusion, and multimodal uncertainty modeling.
 - Extend 83-86 for deeper architectural composition in the pytorchlings folder: residual MLP backbones, CNN-transformer hybrids, graph-sequence co-encoders, and multimodal MoE routing.
 - Extend 87-88 for practical Lightning callback orchestration and first-principles attention mechanics.
+- Extend 89-94 for a beginner-to-advanced chemistry LLM path: tokenization/data prep, decoder pretraining, instruction tuning, RAG grounding, preference optimization, and multimodal fusion.
 
 ## Quick check command
 
@@ -142,4 +143,18 @@ Exercises 87-88 add focused numerical drills requested for Lightning and attenti
 
 - 87: configure a production-relevant Lightning callback stack (EarlyStopping, checkpointing, LR monitoring)
 - 88: implement scaled dot-product attention and causal masking from scratch to build attention intuition
+
+
+## Chemistry LLM development path (beginner -> advanced)
+
+Exercises 89-94 were added to create a step-by-step path for learners who want to start from the basics and bridge toward advanced chemistry-focused LLM engineering:
+
+- 89: build a tiny chemistry corpus pipeline (vocab + tokenization + autoregressive windows)
+- 90: implement a decoder-only LM with causal masking from scratch
+- 91: practice instruction tuning data formatting and response-only SFT masking
+- 92: implement a lightweight retrieval workflow and grounded prompting (RAG basics)
+- 93: implement Direct Preference Optimization (DPO) objective mechanics
+- 94: fuse text representations with molecular descriptors in a multimodal adapter
+
+This sequence is intentionally cumulative: each exercise reuses skills from prior steps so beginners can move from fundamentals to realistic chemistry LLM components.
 

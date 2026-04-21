@@ -103,3 +103,9 @@
 | 86 | PyTorch | Mixture-of-Experts multimodal router | `exercises/86_moe_multimodal_router/moe_multimodal_router.py` | `solutions/86_moe_multimodal_router.py` |
 | 87 | Lightning | Callback stack (EarlyStopping, checkpointing, LR monitor) | `exercises/87_lightning_callbacks/callbacks_and_early_stopping.py` | `solutions/87_callbacks_and_early_stopping.py` |
 | 88 | PyTorch | Scaled dot-product attention from scratch + causal masking | `exercises/88_attention_mechanics/scaled_dot_product_attention.py` | `solutions/88_scaled_dot_product_attention.py` |
+| 89 | PyTorch + NLP | Chemistry corpus tokenization + LM window construction | `exercises/89_chem_llm_tokenization/chem_corpus_tokenization.py` | `N/A (exercise scaffold)` |
+| 90 | PyTorch + NLP | Tiny decoder-only LM with causal masking | `exercises/90_tiny_decoder_lm/tiny_decoder_lm.py` | `N/A (exercise scaffold)` |
+| 91 | PyTorch + LLM | Chemistry instruction SFT with response-only masking | `exercises/91_chem_instruction_sft/chem_instruction_sft.py` | `N/A (exercise scaffold)` |
+| 92 | Retrieval + LLM | Chemistry RAG retrieval + grounded prompt construction | `exercises/92_chem_rag_basics/chem_rag_pipeline.py` | `N/A (exercise scaffold)` |
+| 93 | Post-training | Direct Preference Optimization (DPO) objective mechanics | `exercises/93_chem_preference_optimization/direct_preference_optimization.py` | `N/A (exercise scaffold)` |
+| 94 | Multimodal | Text + descriptor adapter for chemistry property prediction | `exercises/94_chem_llm_multimodal_adapter/chem_multimodal_adapter.py` | `N/A (exercise scaffold)` |
