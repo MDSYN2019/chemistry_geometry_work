@@ -109,3 +109,7 @@
 | 92 | Retrieval + LLM | Chemistry RAG retrieval + grounded prompt construction | `exercises/92_chem_rag_basics/chem_rag_pipeline.py` | `N/A (exercise scaffold)` |
 | 93 | Post-training | Direct Preference Optimization (DPO) objective mechanics | `exercises/93_chem_preference_optimization/direct_preference_optimization.py` | `N/A (exercise scaffold)` |
 | 94 | Multimodal | Text + descriptor adapter for chemistry property prediction | `exercises/94_chem_llm_multimodal_adapter/chem_multimodal_adapter.py` | `N/A (exercise scaffold)` |
+
+| 95 | PyG + Theory | Limited expressiveness failure lab | `exercises/95_gnn_expressiveness_failure/gnn_expressiveness_failure.py` | `N/A (exercise scaffold)` |
+| 96 | PyG + Theory | Oversmoothing failure lab | `exercises/96_gnn_oversmoothing_lab/gnn_oversmoothing_lab.py` | `N/A (exercise scaffold)` |
+| 97 | PyG + Theory | Oversquashing failure lab | `exercises/97_gnn_oversquashing_lab/gnn_oversquashing_lab.py` | `N/A (exercise scaffold)` |

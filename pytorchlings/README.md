@@ -158,3 +158,12 @@ Exercises 89-94 were added to create a step-by-step path for learners who want t
 
 This sequence is intentionally cumulative: each exercise reuses skills from prior steps so beginners can move from fundamentals to realistic chemistry LLM components.
 
+
+
+## GNN failure modes extension
+
+Exercises 95-97 add focused labs for three commonly confused GNN failure modes:
+
+- 95: limited expressiveness (aggregation collisions, WL-style limits)
+- 96: oversmoothing (representation homogenization with depth)
+- 97: oversquashing (long-range information bottlenecks)
