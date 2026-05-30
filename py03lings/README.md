@@ -15,6 +15,7 @@ A rustlings-style practice track for Python 3 fundamentals, async exercises, and
 - Continue 04-05 for async foundations.
 - Work through 06-09 for dataclasses and validation.
 - Finish 10-15 for practical data engineering patterns (modeling, partitioning, orchestration, governance, and performance).
+- Use 16-19 to practice systems-minded Python: `__slots__`, `deque`, page/cache behavior, and scheduler time slices.
 
 ## Quick check commands
 
