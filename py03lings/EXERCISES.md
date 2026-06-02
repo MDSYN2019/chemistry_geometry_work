@@ -53,3 +53,15 @@
 | 17 | choosing `deque` vs `list` for queues and rotation | `exercises/17_deque_work_queue/work_queue.py` | `solutions/17_work_queue.py` |
 | 18 | virtual pages and LRU memory pressure simulation | `exercises/18_memory_pages/page_cache.py` | `solutions/18_page_cache.py` |
 | 19 | kernel-style round-robin scheduling and time slices | `exercises/19_scheduler_timeslices/scheduler.py` | `solutions/19_scheduler.py` |
+
+## Object-Oriented Python sushi simulator
+
+These exercises mirror a four-day OOP course arc: start with plain data that wants to become objects, then add Python's data model, design judgment around inheritance vs. composition, and finally properties/dataclasses/SOLID-style swappable behavior.
+
+| # | Topic | Exercise File | Solution File |
+|---|---|---|---|
+| 20 | classes, instances, `__repr__`, and mutable attribute traps | `exercises/20_oop_sushi_day1/sushi_plate.py` | `solutions/20_sushi_plate.py` |
+| 21 | data model methods, sequence behavior, comparison, and alternate constructors | `exercises/21_oop_sushi_data_model/conveyor_belt.py` | `solutions/21_conveyor_belt.py` |
+| 22 | `@classmethod`, inheritance, composition, ABCs, and polymorphism | `exercises/22_oop_sushi_creation_design/restaurant_design.py` | `solutions/22_restaurant_design.py` |
+| 23 | `@property`, dataclasses, `default_factory`, protocols, and swappable pricing | `exercises/23_oop_sushi_properties_solid/simulator.py` | `solutions/23_simulator.py` |
+
