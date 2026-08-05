@@ -17,6 +17,8 @@ This repository is now a **multi-language learning workspace** rather than a sin
 - `cxx/` — legacy C++ geometry code
 - `jaxlings/` — rustlings-style JAX exercises and solutions
 - `algolings/` — rustlings-style algorithms exercises from simple to complex
+- `modern_deep_learning_research_exercises.md` — research-level GNN,
+  Transformer, and diffusion model exercise track
 
 ## Build / run notes
 
@@ -106,4 +108,3 @@ Concrete exercise scripts are available at:
 - `src/pytorch_practice/interview_exercises/README.md`
 
 These are executable Python stubs that can be used directly in take-home or live interview settings.
-
