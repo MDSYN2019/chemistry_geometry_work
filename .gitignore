@@ -1,2 +1,6 @@
 __pycache__/
 *.py[cod]
+
+# Project specifications are supplied separately and are not stored as binary
+# objects in this source repository.
+aldc-cl-br-rbfe/docs/*.pdf

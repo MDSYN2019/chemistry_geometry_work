@@ -1,0 +1,7 @@
+name: aldc-cl-br-rbfe
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pytest>=7
+  # Later milestones will pin AmberTools/RDKit only when their protocols exist.
