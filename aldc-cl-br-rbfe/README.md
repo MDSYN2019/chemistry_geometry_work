@@ -11,6 +11,12 @@ chain-A Zn/EDO geometry. No Zn parameters, ligand poses, molecular dynamics, qua
 chemistry, or free-energy values have been generated. M1 must not start until this
 structural baseline is reviewed.
 
+An M1 handoff runner is provided, but this does not mean M1 results exist. It validates
+a user-supplied MCPB.py `prmtop`/`inpcrd` pair in dependency-free dry-run mode and,
+when OpenMM is explicitly installed, can produce a seeded NPT trajectory and basic
+thermodynamic QC. See [`metal_site/README.md`](metal_site/README.md) for the chemistry
+decisions that remain mandatory before using it.
+
 The primary scientific specification is the separately supplied
 `ALDC_Cl_Br_RBFE_Reproduction_Guide.pdf`. It is intentionally not committed because
 this source repository does not track binary files. Place a local copy under `docs/`
@@ -88,6 +94,8 @@ conda env create -f environment.yml
 conda activate aldc-cl-br-rbfe
 # or, in an existing Python >=3.10 environment:
 python -m pip install -e '.[test]'
+# additionally, on a dynamics host:
+python -m pip install -e '.[md]'
 ```
 
 ## Reproduction commands
