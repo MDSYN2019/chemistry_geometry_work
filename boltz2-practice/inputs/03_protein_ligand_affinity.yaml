@@ -1,0 +1,15 @@
+version: 1
+
+# This protein/ligand pair is only a pipeline fixture, not a binding claim.
+sequences:
+  - protein:
+      id: A
+      sequence: MKTAYIAKQRQISFVKSHFSRQDILDLICEN
+  - ligand:
+      id: B
+      # Aspirin, represented explicitly so this example does not need a CCD lookup.
+      smiles: CC(=O)OC1=CC=CC=C1C(=O)O
+
+properties:
+  - affinity:
+      binder: B

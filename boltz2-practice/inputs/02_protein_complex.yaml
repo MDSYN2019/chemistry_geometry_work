@@ -1,0 +1,11 @@
+version: 1
+
+# Two artificial protein chains. Their presence in one input requests a complex;
+# it does not assert that these sequences interact in nature.
+sequences:
+  - protein:
+      id: A
+      sequence: MKTAYIAKQRQISFVKSHFSRQDILDLICEN
+  - protein:
+      id: B
+      sequence: GSHMTDPNRQQVAIKELENQKSKLAALEHHHHHH
