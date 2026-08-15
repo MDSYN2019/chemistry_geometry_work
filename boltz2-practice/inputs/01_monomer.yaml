@@ -1,0 +1,7 @@
+version: 1
+
+# A short, artificial protein sequence for learning the input format.
+sequences:
+  - protein:
+      id: A
+      sequence: MKTAYIAKQRQISFVKSHFSRQDILDLICEN

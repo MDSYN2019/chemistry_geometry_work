@@ -1,0 +1,5 @@
+# Boltz predictions and downloaded/cache artifacts do not belong in Git.
+results/
+cache/
+*.npz
+*.npy
