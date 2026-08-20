@@ -51,7 +51,7 @@ flowchart LR
 | --- | --- | --- |
 | **ALDC Cl → Br RBFE** | Milestone-gated reconstruction of a Zn-containing enzyme relative-binding free-energy study; M0 currently inventories and measures the supplied structure. | [`aldc-cl-br-rbfe/README.md`](aldc-cl-br-rbfe/README.md) |
 | **Boltz-2 practice lab** | Small monomer, protein-complex, and protein–ligand fixtures for learning prediction and responsible result interpretation. | [`boltz2-practice/README.md`](boltz2-practice/README.md) |
-| **RDKit small-molecule feature store** | Vendor-neutral molecule parsing, normalization, descriptors, fingerprints, clustering, and diversity selection. | [`docs/rdkit_feature_store.md`](docs/rdkit_feature_store.md) |
+| **RDKit small-molecule feature store** | Vendor-neutral molecule parsing, normalization, descriptors, fingerprints, clustering, and diversity selection. | [`rdkit-feature-store/README.md`](rdkit-feature-store/README.md) |
 | **GB demand forecasting lab** | Leakage-aware, point-in-time-correct forecasting exercises with generated half-hourly demand and standard-library baselines. | [`time_series_forecasting/README.md`](time_series_forecasting/README.md) |
 | **pytorchlings** | Fix-the-code curriculum spanning PyTorch, PyG, chemistry ML, graph learning, Lightning, and chemistry LLMs. | [`pytorchlings/README.md`](pytorchlings/README.md) |
 | **jaxlings** | Progressive exercises in arrays, transformations, autodiff, pytrees, training, device mapping, and checkpointing. | [`jaxlings/README.md`](jaxlings/README.md) |
@@ -128,7 +128,7 @@ flowchart LR
 | --- | --- |
 | **Scientific Python foundations** | [`py03lings`](py03lings/README.md) → [`functoolslings`](functoolslings/README.md) → [`algolings`](algolings/README.md) |
 | **Modern differentiable ML** | [`jaxlings`](jaxlings/README.md) → [`pytorchlings`](pytorchlings/README.md) → [`src/pytorch_practice`](src/README.md) |
-| **Computational chemistry + ML** | [`psi4lings`](psi4lings/README.md) → [RDKit feature store](docs/rdkit_feature_store.md) → [`pytorchlings`](pytorchlings/README.md) → [ALDC RBFE](aldc-cl-br-rbfe/README.md) |
+| **Computational chemistry + ML** | [`psi4lings`](psi4lings/README.md) → [RDKit feature store](rdkit-feature-store/README.md) → [`pytorchlings`](pytorchlings/README.md) → [ALDC RBFE](aldc-cl-br-rbfe/README.md) |
 | **Systems breadth** | [`practical-rustlings`](practical-rustlings/README.md) → [C++ geometry](cxx/README.md) → [LLM implementation template](llm_implementation_template/README.md) |
 
 ## Engineering blueprints

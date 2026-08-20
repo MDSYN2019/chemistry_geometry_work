@@ -1,6 +1,6 @@
 # RDKit small-molecule feature store
 
-The implementation lives in [`src/chemistry/feature_store.py`](../src/chemistry/feature_store.py). It returns ordinary dataclasses, dictionaries, and RDKit bit vectors so a caller can write the results to a dataframe, database, or online feature store without coupling chemistry policy to a storage vendor.
+The implementation lives in [`src/chemistry/feature_store.py`](src/chemistry/feature_store.py). It returns ordinary dataclasses, dictionaries, and RDKit bit vectors so a caller can write the results to a dataframe, database, or online feature store without coupling chemistry policy to a storage vendor.
 
 ## What was added
 
@@ -28,7 +28,7 @@ SMILES is a traversal of a molecular graph, not a database identity. `CCO` and `
 ## End-to-end example
 
 ```python
-from src.chemistry.feature_store import (
+from chemistry.feature_store import (
     StandardizationOptions, featurize_many, morgan_fingerprint,
     cluster_molecules, select_diverse,
 )
@@ -55,7 +55,7 @@ Persist the normalization options and RDKit version with generated features. Cha
 
 The RDKit module is the **feature producer** and Feast is the **feature delivery layer**. PostgreSQL holds the timestamped, computed scalar values as Feast's offline store and also holds the materialized low-latency values in a separate `feast_online` schema. Feast does not run RDKit transformations during retrieval: recompute and reload the table whenever the chemistry policy or RDKit version changes.
 
-The runnable example is in [`feature_repo/`](../feature_repo):
+The runnable example is in [`feature_repo/`](feature_repo):
 
 | File | Purpose |
 |---|---|
@@ -70,13 +70,13 @@ The runnable example is in [`feature_repo/`](../feature_repo):
 Docker Compose starts PostgreSQL, waits until it is healthy, loads demo molecules, applies the Feast definitions, materializes the latest features, and runs both retrieval examples:
 
 ```bash
-docker compose -f docker-compose.feast.yml up --build --abort-on-container-exit feast
+docker compose -f docker-compose.yml up --build --abort-on-container-exit feast
 ```
 
 On success, the `feast` container prints historical and online values for ethanol and benzene. The database and registry use named volumes, so subsequent runs retain state. Reset the complete demo—including the source data, online values, and registry—when changing schemas:
 
 ```bash
-docker compose -f docker-compose.feast.yml down --volumes
+docker compose -f docker-compose.yml down --volumes
 ```
 
 The credentials in Compose are deliberately local-development defaults. Do not expose this database or reuse those credentials in a deployed environment; supply secrets through the platform's secret manager instead.
@@ -86,12 +86,12 @@ The credentials in Compose are deliberately local-development defaults. Do not e
 Start only PostgreSQL, then use the Feast image as an ephemeral CLI. Compose supplies the database environment variables and mounts a persistent registry volume:
 
 ```bash
-docker compose -f docker-compose.feast.yml up -d postgres
-docker compose -f docker-compose.feast.yml run --rm feast python feature_repo/load_features.py
-docker compose -f docker-compose.feast.yml run --rm --workdir /workspace/feature_repo feast feast apply
-docker compose -f docker-compose.feast.yml run --rm --workdir /workspace/feature_repo feast \
+docker compose -f docker-compose.yml up -d postgres
+docker compose -f docker-compose.yml run --rm feast python feature_repo/load_features.py
+docker compose -f docker-compose.yml run --rm --workdir /workspace/feature_repo feast feast apply
+docker compose -f docker-compose.yml run --rm --workdir /workspace/feature_repo feast \
   feast materialize-incremental "$(date -u +%Y-%m-%dT%H:%M:%S)"
-docker compose -f docker-compose.feast.yml run --rm feast python feature_repo/read_features.py
+docker compose -f docker-compose.yml run --rm feast python feature_repo/read_features.py
 ```
 
 To ingest your own molecules, provide a CSV whose header includes `smiles`:
@@ -105,7 +105,7 @@ CC(=O)Oc1ccccc1C(=O)O
 Mount it into the container and pass `--csv`:
 
 ```bash
-docker compose -f docker-compose.feast.yml run --rm \
+docker compose -f docker-compose.yml run --rm \
   -v "$PWD/molecules.csv:/input/molecules.csv:ro" \
   feast python feature_repo/load_features.py --csv /input/molecules.csv
 ```
@@ -114,7 +114,7 @@ Run `feast materialize-incremental` again after every load before expecting new 
 
 ### Run without Docker
 
-Install the Feast integration dependencies with `python -m pip install -r feature_repo/requirements.txt`, start any reachable PostgreSQL instance, execute [`feature_repo/sql/init.sql`](../feature_repo/sql/init.sql), and export these variables:
+Install the Feast integration dependencies with `python -m pip install -r feature_repo/requirements.txt`, start any reachable PostgreSQL instance, execute [`feature_repo/sql/init.sql`](feature_repo/sql/init.sql), and export these variables:
 
 ```bash
 export POSTGRES_HOST=localhost POSTGRES_PORT=5432 POSTGRES_DB=feast

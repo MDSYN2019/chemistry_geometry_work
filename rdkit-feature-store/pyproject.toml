@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "rdkit-feature-store"
+version = "0.1.0"
+description = "Versioned RDKit molecular features delivered through Feast and PostgreSQL"
+authors = ["Workflow Bot <noreply-workflow@sainsburys.co.uk>"]
+readme = "README.md"
+packages = [{ include = "chemistry", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+rdkit = ">=2023.9"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
