@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: feast
+      POSTGRES_USER: feast
+      POSTGRES_PASSWORD: feast
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U feast -d feast"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - feast-postgres:/var/lib/postgresql/data
+      - ./feature_repo/sql/init.sql:/docker-entrypoint-initdb.d/10-feature-table.sql:ro
+
+  feast:
+    build:
+      context: .
+      dockerfile: feature_repo/Dockerfile
+    working_dir: /workspace
+    environment: &feast-environment
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: feast
+      POSTGRES_USER: feast
+      POSTGRES_PASSWORD: feast
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - feast-registry:/workspace/feature_repo/data
+    command: ["bash", "-lc", "python feature_repo/load_features.py && cd feature_repo && feast apply && feast materialize-incremental $$(date -u +%Y-%m-%dT%H:%M:%S) && cd /workspace && python feature_repo/read_features.py"]
+
+volumes:
+  feast-postgres:
+  feast-registry:

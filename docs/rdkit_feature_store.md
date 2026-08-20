@@ -50,3 +50,87 @@ diverse_indexes = select_diverse([row["identity_smiles"] for row in rows], count
 ```
 
 Persist the normalization options and RDKit version with generated features. Changing either can change identifiers, descriptor values, fingerprints, clusters, and selected compounds; feature-store keys should therefore include a feature-set version.
+
+## Use it with Feast and PostgreSQL
+
+The RDKit module is the **feature producer** and Feast is the **feature delivery layer**. PostgreSQL holds the timestamped, computed scalar values as Feast's offline store and also holds the materialized low-latency values in a separate `feast_online` schema. Feast does not run RDKit transformations during retrieval: recompute and reload the table whenever the chemistry policy or RDKit version changes.
+
+The runnable example is in [`feature_repo/`](../feature_repo):
+
+| File | Purpose |
+|---|---|
+| `features.py` | Declares the molecule entity, PostgreSQL source, versioned feature view, and feature service. |
+| `feature_store.yaml` | Connects Feast's registry, offline store, and online store. Credentials are read from environment variables. |
+| `load_features.py` | Computes RDKit records and upserts them into the offline table. It accepts a CSV with a `smiles` header. |
+| `read_features.py` | Demonstrates a point-in-time historical join and an online lookup. |
+| `sql/init.sql` | Creates the source table, timestamp index, and isolated online-store schema. |
+
+### One-command Docker quick start
+
+Docker Compose starts PostgreSQL, waits until it is healthy, loads demo molecules, applies the Feast definitions, materializes the latest features, and runs both retrieval examples:
+
+```bash
+docker compose -f docker-compose.feast.yml up --build --abort-on-container-exit feast
+```
+
+On success, the `feast` container prints historical and online values for ethanol and benzene. The database and registry use named volumes, so subsequent runs retain state. Reset the complete demo—including the source data, online values, and registry—when changing schemas:
+
+```bash
+docker compose -f docker-compose.feast.yml down --volumes
+```
+
+The credentials in Compose are deliberately local-development defaults. Do not expose this database or reuse those credentials in a deployed environment; supply secrets through the platform's secret manager instead.
+
+### Work interactively
+
+Start only PostgreSQL, then use the Feast image as an ephemeral CLI. Compose supplies the database environment variables and mounts a persistent registry volume:
+
+```bash
+docker compose -f docker-compose.feast.yml up -d postgres
+docker compose -f docker-compose.feast.yml run --rm feast python feature_repo/load_features.py
+docker compose -f docker-compose.feast.yml run --rm --workdir /workspace/feature_repo feast feast apply
+docker compose -f docker-compose.feast.yml run --rm --workdir /workspace/feature_repo feast \
+  feast materialize-incremental "$(date -u +%Y-%m-%dT%H:%M:%S)"
+docker compose -f docker-compose.feast.yml run --rm feast python feature_repo/read_features.py
+```
+
+To ingest your own molecules, provide a CSV whose header includes `smiles`:
+
+```csv
+smiles
+CCO
+CC(=O)Oc1ccccc1C(=O)O
+```
+
+Mount it into the container and pass `--csv`:
+
+```bash
+docker compose -f docker-compose.feast.yml run --rm \
+  -v "$PWD/molecules.csv:/input/molecules.csv:ro" \
+  feast python feature_repo/load_features.py --csv /input/molecules.csv
+```
+
+Run `feast materialize-incremental` again after every load before expecting new values from `get_online_features`.
+
+### Run without Docker
+
+Install the Feast integration dependencies with `python -m pip install -r feature_repo/requirements.txt`, start any reachable PostgreSQL instance, execute [`feature_repo/sql/init.sql`](../feature_repo/sql/init.sql), and export these variables:
+
+```bash
+export POSTGRES_HOST=localhost POSTGRES_PORT=5432 POSTGRES_DB=feast
+export POSTGRES_USER=feast POSTGRES_PASSWORD=feast
+python feature_repo/load_features.py --csv molecules.csv
+(cd feature_repo && feast apply)
+(cd feature_repo && feast materialize-incremental "$(date -u +%Y-%m-%dT%H:%M:%S)")
+python feature_repo/read_features.py
+```
+
+`get_historical_features` performs a point-in-time join: each entity row needs an `event_timestamp`, and Feast returns the newest source record no later than that time (within the feature view TTL). Use it to construct training sets without future leakage. `get_online_features` takes only entity keys and returns the values last materialized into the online store; use it on inference paths.
+
+### Versioning and production notes
+
+* The current definitions are explicitly named `molecule_features_v1` and `molecule_model_v1`. Create `v2` objects and a new table—not an in-place semantic change—when normalization, descriptor definitions, or RDKit versions change.
+* `identity_smiles` is the entity join key under the documented standardization policy. The raw submitted string stays in PostgreSQL for audit but is not an entity key.
+* Fingerprints are intentionally absent from this initial Feast view. Store a stable byte/array encoding with explicit radius, bit length, and generator version before adding them; never treat a collision-prone fingerprint as identity.
+* The loader uses one event time per batch. Production ingestion should use the source observation time, retain `created_timestamp` for deduplication, validate rejected molecules, and monitor freshness.
+* The bundled PostgreSQL online store makes the example easy to operate. For stricter latency or scale requirements, retain PostgreSQL as the offline source and configure a supported dedicated online store without changing feature names or client calls.
