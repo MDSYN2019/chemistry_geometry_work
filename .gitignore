@@ -1,5 +1,6 @@
 __pycache__/
 *.py[cod]
+feature_repo/data/
 
 # Project specifications are supplied separately and are not stored as binary
 # objects in this source repository.

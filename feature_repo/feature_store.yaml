@@ -1,0 +1,22 @@
+project: chemistry_geometry
+provider: local
+registry: data/registry.db
+entity_key_serialization_version: 3
+
+offline_store:
+  type: postgres
+  host: ${POSTGRES_HOST}
+  port: ${POSTGRES_PORT}
+  database: ${POSTGRES_DB}
+  db_schema: public
+  user: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
+
+online_store:
+  type: postgres
+  host: ${POSTGRES_HOST}
+  port: ${POSTGRES_PORT}
+  database: ${POSTGRES_DB}
+  db_schema: feast_online
+  user: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
