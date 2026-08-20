@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 
 import psycopg
 
-from src.chemistry.feature_store import StandardizationOptions, featurize_smiles
+from chemistry.feature_store import StandardizationOptions, featurize_smiles
 
 
 DEFAULT_SMILES = ["CCO", "OCC", "CC(=O)[O-].[Na+]", "c1ccccc1", "CC(=O)Oc1ccccc1C(=O)O"]

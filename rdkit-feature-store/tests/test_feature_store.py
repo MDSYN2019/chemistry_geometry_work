@@ -2,7 +2,7 @@ import pytest
 
 rdkit = pytest.importorskip("rdkit")
 
-from src.chemistry.feature_store import (  # noqa: E402
+from chemistry.feature_store import (  # noqa: E402
     InvalidMoleculeError,
     StandardizationOptions,
     bemis_murcko_scaffold,

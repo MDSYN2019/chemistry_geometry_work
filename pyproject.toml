@@ -7,10 +7,6 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-rdkit = ">=2023.9"
-
-[tool.poetry.group.dev.dependencies]
-pytest = ">=8"
 
 
 [build-system]
